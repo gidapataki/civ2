@@ -1,0 +1,1328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="CivSharpGame.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="CivSharpGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+    <commandLine file="CivSharpGame.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the 
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward 
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CivSharp.Common.dll" size="8704">
+      <assemblyIdentity name="CivSharp.Common" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>XJX9Uoq8BaPuIk8iF9zCW+05S9A=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CivSharpGame.exe" size="3461632">
+      <assemblyIdentity name="CivSharpGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>tFWaFZciVo4DPssgRHy4G2OpYCI=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="CivSharpGame.exe.config" size="222">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>oB3nd+CQGCZFXojrvm0vJiT/tYI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\bank.png" size="2308">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>8OXU5y2NyoNIBWXLmPgHmthFM1k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\barakk.png" size="1884">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>hured1QFE21bLdjJqjweltyfqRA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\barikad.png" size="1035">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>B7YNWYU4XX7EErcl86kah7TG5gs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\bg.png" size="930911">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>UsQljX8Nzx442AxYDCPuYHoNXyw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-blue_civ1.png" size="5647">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>rO90mFSBd3qHJmJ27MUFXGDagt0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-blue_civ2.png" size="5076">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>riOZ9RTyJ0Fth45csKKE6SBItrg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-blue_civ3.png" size="5951">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>I/3En7K4mP+mdb4W3Shpx/7xui4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-blue_civ4.png" size="6587">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>pXx2xH9uCtwTYtcB3lLlHEFjv6I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-green_civ1.png" size="5783">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>2n9Io7yQhSMx8cDts9cYq7F0GUw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-green_civ2.png" size="5118">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>pDSzf7lzwHA2Tiu0CBx7t6HMlAs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-green_civ3.png" size="5965">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>edROSMCrlwMVjYvWWbNRcOJ5rlQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-green_civ4.png" size="6644">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>k96gzWuNn1Km9etI3Z/CQ4gi0Lk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-orange_civ1.png" size="6447">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>0cxlN5JTjmWxQQIJbRPfT/doVmU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-orange_civ2.png" size="6447">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>0cxlN5JTjmWxQQIJbRPfT/doVmU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-red_civ1.png" size="6526">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>j8f6XVUn1viMpCb3AyUOn7T81Rc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_2-red_civ2.png" size="6526">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>j8f6XVUn1viMpCb3AyUOn7T81Rc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-blue_civ1.png" size="5879">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>NdHJk3Rk/LZdepw57C8BhU4JTaA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-blue_civ2.png" size="5501">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>e21hFCP5xGkDw7e1oYaKOTKrnEQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-blue_civ3.png" size="5806">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>GpZ+F5vY9n0KuVU2A8hADXtXnSg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-blue_civ4.png" size="6474">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>msYCOREl+tGyefnCMdPszWBA9Cs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-green_civ1.png" size="5907">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>litlu2VaRsoK6mS4j06yj9ES3Gg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-green_civ2.png" size="5557">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>eiI9J+WcbEBbUvco+Th+DWEYO2c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-green_civ3.png" size="5785">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>jfUF1HgYIfeLdlvait7+5FCk79U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-green_civ4.png" size="6456">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>+uMi1w5DXjEPezNLz0ne8hxwTvU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-orange_civ1.png" size="6447">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>0cxlN5JTjmWxQQIJbRPfT/doVmU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-orange_civ2.png" size="6447">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>0cxlN5JTjmWxQQIJbRPfT/doVmU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-orange_civ3.png" size="5941">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>7HYGOOWHnA3fMCL13NvCtoQEoNQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-orange_civ4.png" size="6513">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>GSfIbTuZQNV7EG8UTrBdo+2A7rE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-red_civ1.png" size="6526">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>j8f6XVUn1viMpCb3AyUOn7T81Rc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-red_civ2.png" size="6526">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>j8f6XVUn1viMpCb3AyUOn7T81Rc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-red_civ3.png" size="6066">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>DT98fSX/zzaBS/r3ysBlPjS9X4Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city_3-red_civ4.png" size="6658">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>AtqElCfeYR9yimAGP6G+9EEucYw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-blue_civ1.png" size="3126">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Dzk10ltBEmBt689FwGnhHn9LzKM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-blue_civ2.png" size="2619">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>5wBl2VgFN9Qxh3Bb3Z7ez8V2Qo0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-blue_civ3.png" size="4528">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>T4gAjCG6nDMhYKv9MOfuxizsBO0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-blue_civ4.png" size="3628">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>IC5FVN5Mcbr9kdhk2ptJ52nyl28=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-green_civ1.png" size="3197">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>FfHuUi22V6oJFGJ35ADYe7RELi8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-green_civ2.png" size="2715">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>pJTfzEbmCaRapG6l0U/+/QHh36Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-green_civ3.png" size="4519">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>yOZtovnjGHoO2vs7egjV17/QGMw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-green_civ4.png" size="3660">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Pv8DW+HFK19TLPdsMbc10Ybsl+M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-orange_civ1.png" size="6447">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>0cxlN5JTjmWxQQIJbRPfT/doVmU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-orange_civ2.png" size="6447">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>0cxlN5JTjmWxQQIJbRPfT/doVmU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-orange_civ3.png" size="4553">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>SC8tp3G/nRZFTvqJgVz8avL1Qp8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-orange_civ4.png" size="3659">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>4eh8HXNZ4soY9IQ9uhDOeYlnPRw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-red_civ1.png" size="6526">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>j8f6XVUn1viMpCb3AyUOn7T81Rc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-red_civ2.png" size="6526">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>j8f6XVUn1viMpCb3AyUOn7T81Rc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-red_civ3.png" size="4515">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>6SBbr89ZRt6+CEoHvWh/PFaTM7U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\city-red_civ4.png" size="3668">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Kz0CFpJtwOWf9npyPw4MjM+0+Us=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\fal.png" size="1034">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>SMIZGRPD+zZlJlJwW9AIU/OSrJs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\falu.png" size="3157">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>1lH1pMoSs3ugQ5qKZkcHnjMJ8iA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\favicon.ico" size="1150">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>1l/S9wRrEs9tlB8H+Y8IRKSzU24=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-blue_civ1.png" size="1846">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>p4osRZWCN1busRilNeP+VEnU9n4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-blue_civ2.png" size="1377">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>kv5pTvE/PwidTTZsFvnUO6LfUwA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-blue_civ3.png" size="1668">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>tWIJIb2xBOFRUwenIp+GwwcLiOk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-blue_civ4.png" size="1478">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>h2gKuFCmt+niFnNZXEFTQ2HiIJA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-green_civ1.png" size="1882">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>o5Gp7qT+W09J7ISDtwTfF76Cq7I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-green_civ2.png" size="1386">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>hkP4QQU8TkSTphVp1ZZ5ADatgzs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-green_civ3.png" size="1654">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>8kRZ9azj4YLtidN5PvJnqseLAeo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-green_civ4.png" size="1484">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>t4lFx5QIT4bn9OlS9pO+f53kpHI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-orange_civ1.png" size="4312">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>4eERtgnO8/wMIiKueXGs29NVFUw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-orange_civ2.png" size="4312">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>4eERtgnO8/wMIiKueXGs29NVFUw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-orange_civ3.png" size="1679">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>swtbKBrPSt/PBUcdoLsEZweGfmw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-orange_civ4.png" size="1489">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>rYliL8pt44MZSY/ePR9URw24MMo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-red_civ1.png" size="4234">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>NtQVzmRxioH4cawYIcnUfpTWUsI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-red_civ2.png" size="4234">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>NtQVzmRxioH4cawYIcnUfpTWUsI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-red_civ3.png" size="1693">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>wFPEC30fzHditljKSeCxCFB3xfA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\felderito-red_civ4.png" size="1500">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>T9HO4MZUWFl1ExyihMqSvhy1/jM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\harci_ akademia.png" size="1632">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>JXFWE6C/D3oBA1zLvofHBMNF/GY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\harci_akademia.png" size="2429">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>0X8Z74muIfg4x4v4RC3Zr8+VsE0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\kovacsmuhely.png" size="1830">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>s4W3yv4GSfyr53aDMwKMU/ezpLE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\logo_v4_v2_FINAL_2.png" size="508352">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>5uoruuzN9si15okxeOZNQ5h2rdQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-blue_civ1.png" size="3780">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>y6JXvO8W4PSPAPEzTPaRaE7LwzU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-blue_civ2.png" size="3366">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>FJzfZsKGg7W5epRbbLdzhcL31mc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-blue_civ3.png" size="3674">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>8TSiLuk6JhP3iJPgvZal5kYs7aU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-blue_civ4.png" size="2660">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>KObIBRN/DXZPbqNU9r66Mn28Iqk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-green_civ1.png" size="3808">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>wNSoa5MF6tv3SSp66P39hYOTbfY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-green_civ2.png" size="3405">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>eLp50KvGth9ureRSUdsRC8GMl5s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-green_civ3.png" size="3670">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>GJ651X13PDEMl2zIzI/7HGHP7Jo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-green_civ4.png" size="2669">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>yQqH6k8qCZMp6oZblTMebrxajR4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-orange_civ1.png" size="6269">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>E+wRbSYnSRsP0K5UFWR0EAF9jYc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-orange_civ2.png" size="6269">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>E+wRbSYnSRsP0K5UFWR0EAF9jYc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-orange_civ3.png" size="3709">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>EJqgsJcGDNyc3sKxKmI5X2GhSqQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-orange_civ4.png" size="2693">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>9Prv7rxJ1sMp4GWy6cLS76vfqic=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-red_civ1.png" size="6242">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>RkQ8gCZWk9UKQUmK59TjZbsypWw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-red_civ2.png" size="6242">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>RkQ8gCZWk9UKQUmK59TjZbsypWw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-red_civ3.png" size="3762">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>dPBZ98WjeWeFYFnX7dlXFnB8Su4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\lovag-red_civ4.png" size="2688">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Cd+aUwNBTsjnUNMuStVXS0C2spk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-blue_civ1.png" size="2200">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>auyR6cgbaKThbDCyf59Tii120A4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-blue_civ2.png" size="2085">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>NxSOXquldOwBPgAiYROIQa9JASk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-blue_civ3.png" size="2156">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>1OY7SAQFKvD5kyGyr6gKktk54Os=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-blue_civ4.png" size="2030">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>1qkwIao9W5AXnrhoUjSuNqB85GE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-green_civ1.png" size="2193">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>WqfLD8RlJxsigVSL+EI0BdVF4ro=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-green_civ2.png" size="2243">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>bYDHsdBa3VTcXz5LRC+P4VRqRh0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-green_civ3.png" size="2067">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>hgTjfkHr2u/7vhkI3mHql6ADRik=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-green_civ4.png" size="2064">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>bk1B75LWHfw8MXPajMDSPBheo5E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzok_tornya.png" size="1422">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>BzAY1EZlNEKrrH13vnw5jYRGDNY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-orange_civ1.png" size="3900">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>2yvKhGaX4S/leNaa6HotJS6U/V0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-orange_civ2.png" size="3900">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>2yvKhGaX4S/leNaa6HotJS6U/V0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-orange_civ3.png" size="2106">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Z049Ci4g4gBBvDfpxVRl39XkgO8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-orange_civ4.png" size="2065">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>XnX9mUpD5OVUgzhiQQ68ToAFWCc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-red_civ1.png" size="3871">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>aS+iLPzH44WAwLI0vi66RBEJv68=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-red_civ2.png" size="3871">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>aS+iLPzH44WAwLI0vi66RBEJv68=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-red_civ3.png" size="2094">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>OJ8hTi6v4ffo3v3LKH7AFe+GIjw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\orzo-red_civ4.png" size="2099">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Kogpykwqu/7CLKa9fqDaKt2HA6c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\varos.png" size="3754">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>tQT8yaqP842poCxS8enqK45dr58=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\varoshaza.png" size="1980">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>NF8xcETrlFuICtiLeZz7rIiQk/k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-blue_civ1.png" size="2604">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>59Db8QSsnn4jP7LORnu9ourHfvM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-blue_civ2.png" size="2380">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>3BJ5uc9l4KOgh7aIgQ3p08aZIRc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-blue_civ3.png" size="2478">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>xNrr0nqITWv3h4NhD+65SU7R/fU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-blue_civ4.png" size="2035">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>sxi1j32W+XadgV0TJ1KT2Gjutdw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-green_civ1.png" size="2666">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>IFEfTELC5DodLbm3cm67P/cOZ4U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-green_civ2.png" size="2408">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>6JoRl91c9WF22Q9mIX5x1PxMyYA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-green_civ3.png" size="2466">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>CQysDEO5zknJrcqBeD0qn6Ekd7w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-green_civ4.png" size="2063">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>PRrUaC/bUShFmarafy4GPB/PTyQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-orange_civ1.png" size="3905">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>z6494mScEyAtrOKnBPIhnvl7P0c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-orange_civ2.png" size="3905">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>z6494mScEyAtrOKnBPIhnvl7P0c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-orange_civ3.png" size="2500">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>ykVx6PGzhM/cCrAPWmD/wsntc88=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-orange_civ4.png" size="2049">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>+KLnz6V2HV2c+846Ku7mRi50OLg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-red_civ1.png" size="3894">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>JNN6jXRrhZCBmMx74rRP60RDuFM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-red_civ2.png" size="3894">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>JNN6jXRrhZCBmMx74rRP60RDuFM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-red_civ3.png" size="2468">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>pkWMhF2HltOea8Bbp6lMt64CnUA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_mester-red_civ4.png" size="2043">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>7JIG8RWnsNC7WBp14ZVtEps2k+A=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-blue_civ1.png" size="1133">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Pf+y07Yxo0sZvZhOrqYW/n43uAg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-blue_civ2.png" size="957">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>TTAd7Jyx3sOAOGnLJDoLtB84We4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-blue_civ3.png" size="1093">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>32mqhzbZvacV8ThK5qQfwC6OV6k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-blue_civ4.png" size="962">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>js2uwItTnQC9XWgX0IF5Vcl7a5I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-green_civ1.png" size="1145">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>xpnRQ0ZnGIWEmQzKcnn/Do7XkF0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-green_civ2.png" size="968">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>wZtFbZUBPZhAoWXQ39FEd6pVP5E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-green_civ3.png" size="1078">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>/z+t5oQmcXbbfhsh8B1mqJb46JA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-green_civ4.png" size="1004">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>bsVtnxOSgz47/MWNvx0lRYEpmpU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-orange_civ1.png" size="3724">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>asbkAJjR/dD1k0Hg5//84hplqp0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-orange_civ2.png" size="3724">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>asbkAJjR/dD1k0Hg5//84hplqp0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-orange_civ3.png" size="1096">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Dz6+0Hfhm3jJX2SYHUR8xyTDXN0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-orange_civ4.png" size="1010">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>mYPkSVWZ44y60lD34+UGWLHTZCs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-red_civ1.png" size="3689">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>tsFFox0ocOJAlekZqa7VoSB/Pbs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-red_civ2.png" size="3689">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>tsFFox0ocOJAlekZqa7VoSB/Pbs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-red_civ3.png" size="1102">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Si7cBnaiOjiXUgD4Il92Glzh8EQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="icons\vivo_tanonc-red_civ4.png" size="965">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>XIBokx07JVW7R/AOn/e5SvMudxg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Players\README.txt" size="180">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>/9zRma8DeuHpWs5nXXngYQ1J+wE=</dsig:DigestValue>
+    </hash>
+  </file>
+</asmv1:assembly>
