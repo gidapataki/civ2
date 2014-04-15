@@ -1,29 +1,53 @@
-﻿using CivSharp.Common;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Drawing;
+using CivSharp.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DummyPlayer.Enums;
+using DummyPlayer.Helpers;
 
 namespace DummyPlayer
 {
     public partial class Player : IPlayer
     {
+        private UnitInfo unitToMove;
+        private string unitId = String.Empty;
+        private bool moved;
+
         public MovementData OnMovement()
         {
-            var unit = myUnits.FirstOrDefault();
-
-            if (unit != null && unit.MovementPoints > 0)
+            if (moved)
             {
+                moved = false;
+                return null;
+            }
+
+            if (unitId == String.Empty)
+                unitToMove = myUnits.FirstOrDefault();
+            else
+                unitToMove = myUnits.SingleOrDefault(p => p.UnitID == unitId);
+
+            if (unitToMove != null && unitToMove.MovementPoints > 0)
+            {
+                unitId = unitToMove.UnitID;
+
+                var whereToGo = turn % 2 == 0 ?
+                            GeometryHelper.GetDirectionByLocationAndDestination(
+                                new Point { X = unitToMove.PositionX, Y = unitToMove.PositionY },
+                                new Point { X = unitToMove.PositionX + 1, Y = unitToMove.PositionY })
+                            : GeometryHelper.GetDirectionByLocationAndDestination(
+                                new Point { X = unitToMove.PositionX, Y = unitToMove.PositionY },
+                                new Point { X = unitToMove.PositionX - 1, Y = unitToMove.PositionY });
+
                 var md = new MovementData
                 {
-                    UnitID = unit.UnitID,
-                    FromX = unit.PositionX,
-                    FromY = unit.PositionY,
-                    ToX = turn % 2 == 0 ? unit.PositionX + 1 : unit.PositionX - 1,
-                    ToY = unit.PositionY
+                    UnitID = unitToMove.UnitID,
+                    FromX = unitToMove.PositionX,
+                    FromY = unitToMove.PositionY,
+                    ToX = unitToMove.PositionX + GeometryHelper.TransformX(whereToGo, capitalPosition),
+                    ToY = unitToMove.PositionY + GeometryHelper.TransformY(whereToGo, capitalPosition)
                 };
 
+                moved = true;
                 return md;
             }
 
@@ -39,21 +63,21 @@ namespace DummyPlayer
 
         public BuildingData OnBuilding()
         {
-            if (myPlayer.Money < 300 || myUnits.Count == 0)
-                return null;
+            //if (myPlayer.Money < 300 || myUnits.Count == 0)
+            //    return null;
 
-            var unit = myUnits.FirstOrDefault();
+            //var unit = myUnits.FirstOrDefault();
 
-            if (unit != null)
-            {
-                var bd = new BuildingData
-                {
-                    PositionX = unit.PositionX,
-                    PositionY = unit.PositionY
-                };
+            //if (unit != null)
+            //{
+            //    var bd = new BuildingData
+            //    {
+            //        PositionX = unit.PositionX,
+            //        PositionY = unit.PositionY
+            //    };
 
-                return bd;
-            }
+            //    return bd;
+            //}
 
             return null;
         }
