@@ -1,3 +1,2 @@
-CivSharp 2/Players/
-DummyPlayer/DummyPlayer/obj/Debug/DummyPlayer.csproj.FileListAbsolute.txt
-DummyPlayer/DummyPlayer/obj/
+*/obj/*
+*/bin/*
