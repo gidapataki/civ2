@@ -49,6 +49,7 @@
     <Compile Include="Enums\UnitTypes.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Player.Common.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy.cs" />
   </ItemGroup>
