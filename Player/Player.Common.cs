@@ -16,8 +16,8 @@ namespace CivPlayer
 		private int turn;
 		private WorldInfo world;
 		private PlayerInfo myPlayer;
-		private List<UnitInfo> myUnits;
-		private List<CityInfo> myCities;
+		private UnitInfo[] myUnits;
+		private CityInfo[] myCities;
 
 		public abstract string PlayerName { get; }
 
@@ -37,8 +37,8 @@ namespace CivPlayer
 		private void UpdateStats()
 		{
 			myPlayer = world.Players.Single(p => p.Name == PlayerName);
-			myUnits = world.Units.Where(p => p.Owner == PlayerName && p.HitPoints > 0).ToList();
-			myCities = world.Cities.Where(p => p.Owner == PlayerName).ToList();
+			myUnits = world.Units.Where(p => p.Owner == PlayerName && p.HitPoints > 0).ToArray();
+			myCities = world.Cities.Where(p => p.Owner == PlayerName).ToArray();
 		}
 
 
@@ -74,53 +74,53 @@ namespace CivPlayer
 		}
 
 
-		private ResearchData Research(ResearchTypes research)
+		private ResearchData Research(ResearchType research)
 		{
 			return new ResearchData { WhatToResearch = research.GetDescription() };
 		}
 
-		private bool HasResearch(ResearchTypes research)
+		private bool HasResearch(ResearchType research)
 		{
 			return myPlayer.Researched.Contains(research.GetDescription());
 		}
 
-		private bool CanResearch(ResearchTypes research)
+		private bool CanResearch(ResearchType research)
 		{
 			switch (research) {
-				case ResearchTypes.Falu:
-				case ResearchTypes.OrzokTornya:
-				case ResearchTypes.Kovacsmuhely:
-				case ResearchTypes.Barakk:
+				case ResearchType.Falu:
+				case ResearchType.OrzokTornya:
+				case ResearchType.Kovacsmuhely:
+				case ResearchType.Barakk:
 					return true;
-				case ResearchTypes.Varos:
-				case ResearchTypes.Varoshaza:
-				case ResearchTypes.Barikad:
-					return HasResearch(ResearchTypes.Falu);
-				case ResearchTypes.HarciAkademia:
-					return HasResearch(ResearchTypes.Barakk);
-				case ResearchTypes.Bank:
-					return HasResearch(ResearchTypes.Varos);
-				case ResearchTypes.Fal:
-					return HasResearch(ResearchTypes.Barikad);
+				case ResearchType.Varos:
+				case ResearchType.Varoshaza:
+				case ResearchType.Barikad:
+					return HasResearch(ResearchType.Falu);
+				case ResearchType.HarciAkademia:
+					return HasResearch(ResearchType.Barakk);
+				case ResearchType.Bank:
+					return HasResearch(ResearchType.Varos);
+				case ResearchType.Fal:
+					return HasResearch(ResearchType.Barikad);
 				default:
 					return false;
 			}
 		}
 
-		private static int ResearchCost(ResearchTypes research)
+		private static int ResearchCost(ResearchType research)
 		{
 			switch (research)
 			{
-				case ResearchTypes.Falu: return 200;
-				case ResearchTypes.Varos: return 300;
-				case ResearchTypes.OrzokTornya: return 100;
-				case ResearchTypes.Kovacsmuhely: return 150;
-				case ResearchTypes.Barakk: return 200;
-				case ResearchTypes.HarciAkademia: return 500;
-				case ResearchTypes.Varoshaza: return 150;
-				case ResearchTypes.Bank: return 300;
-				case ResearchTypes.Barikad: return 100;
-				case ResearchTypes.Fal: return 200;
+				case ResearchType.Falu: return 200;
+				case ResearchType.Varos: return 300;
+				case ResearchType.OrzokTornya: return 100;
+				case ResearchType.Kovacsmuhely: return 150;
+				case ResearchType.Barakk: return 200;
+				case ResearchType.HarciAkademia: return 500;
+				case ResearchType.Varoshaza: return 150;
+				case ResearchType.Bank: return 300;
+				case ResearchType.Barikad: return 100;
+				case ResearchType.Fal: return 200;
 				default: return -1;
 			}
 		}
@@ -131,7 +131,7 @@ namespace CivPlayer
 		}
 
 
-		private ResearchData TryResearch(ResearchTypes research)
+		private ResearchData TryResearch(ResearchType research)
 		{
 			return !HasResearch(research) && CanResearch(research) && HasMoney(ResearchCost(research))
 				? Research(research)
@@ -140,7 +140,7 @@ namespace CivPlayer
 
 		public ResearchData OnResearch() // API-2
 		{
-			return TryResearch(ResearchTypes.OrzokTornya);
+			return TryResearch(ResearchType.OrzokTornya);
 		}
 
 
@@ -150,7 +150,7 @@ namespace CivPlayer
 		}
 
 
-		private TrainingData Training(CityInfo city, UnitTypes unitType)
+		private TrainingData Training(CityInfo city, UnitType unitType)
 		{
 			return new TrainingData
 			{
@@ -161,35 +161,35 @@ namespace CivPlayer
 		}
 
 
-		private static int TrainingCost(UnitTypes unitType)
+		private static int TrainingCost(UnitType unitType)
 		{
 			switch (unitType)
 			{
-				case UnitTypes.Felderito: return 50;
-				case UnitTypes.Orzo: return 75;
-				case UnitTypes.Lovag: return 150;
-				case UnitTypes.Tanonc: return 100;
-				case UnitTypes.Mester: return 200;
+				case UnitType.Felderito: return 50;
+				case UnitType.Orzo: return 75;
+				case UnitType.Lovag: return 150;
+				case UnitType.Tanonc: return 100;
+				case UnitType.Mester: return 200;
 				default: return -1;
 			}
 		}
 
 
-		private bool CanTrain(UnitTypes unitType)
+		private bool CanTrain(UnitType unitType)
 		{
 			switch (unitType)
 			{
-				case UnitTypes.Felderito: return true;
-				case UnitTypes.Orzo: return HasResearch(ResearchTypes.OrzokTornya);
-				case UnitTypes.Lovag: return HasResearch(ResearchTypes.Kovacsmuhely);
-				case UnitTypes.Tanonc: return HasResearch(ResearchTypes.Barakk);
-				case UnitTypes.Mester: return HasResearch(ResearchTypes.HarciAkademia);
+				case UnitType.Felderito: return true;
+				case UnitType.Orzo: return HasResearch(ResearchType.OrzokTornya);
+				case UnitType.Lovag: return HasResearch(ResearchType.Kovacsmuhely);
+				case UnitType.Tanonc: return HasResearch(ResearchType.Barakk);
+				case UnitType.Mester: return HasResearch(ResearchType.HarciAkademia);
 				default: return false;
 			}
 		}
 
 
-		private TrainingData TryTraining(CityInfo city, UnitTypes unitType)
+		private TrainingData TryTraining(CityInfo city, UnitType unitType)
 		{
 			return CanTrain(unitType) && HasMoney(TrainingCost(unitType))
 				? Training(city, unitType)
@@ -203,7 +203,7 @@ namespace CivPlayer
 			else
 			{
 				var city = myCities.First();
-				return TryTraining(city, UnitTypes.Felderito);
+				return TryTraining(city, UnitType.Felderito);
 			}
 		}
 

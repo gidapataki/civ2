@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 namespace CivPlayer.Enums
 {
-    public enum ResearchTypes
+    public enum ResearchType
     {
         [Description("falu")]
         Falu,
