@@ -13,12 +13,11 @@ namespace Runner
 
 		static string[] players = new string[] 
 		{
-			"Alice", 
-			"Bob",
+			//"Alice", 
 			//"Ellen",
 			//"Arya",
-			//"Cortana",
-			//"Rikku",
+			"Cortana",
+			"Rikku",
 		};
 
 		static void Main(string[] args)
@@ -26,7 +25,7 @@ namespace Runner
 			var baseDir = Path.GetFullPath(@"..\..\..");
 			var civDir = Path.Combine(baseDir, "CivSharp 2");
 
-			Func<string, string> playerDll = (string s) => Path.Combine(baseDir, s, @"bin\debug", s + ".dll");
+			Func<string, string> playerDll = (string s) => Path.Combine(baseDir, @"Player\bin\debug", s + ".dll");
 			Func<string, string> targetDll = (string s) => Path.Combine(civDir, "Players", s + ".dll");
 
 			foreach (var i in players)

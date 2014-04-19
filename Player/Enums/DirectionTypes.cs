@@ -1,5 +1,5 @@
 ﻿
-namespace Core.Enums
+namespace CivPlayer.Enums
 {
     public enum DirectionTypes
     {

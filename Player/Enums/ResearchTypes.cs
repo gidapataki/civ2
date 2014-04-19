@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-namespace Core.Enums
+namespace CivPlayer.Enums
 {
     public enum ResearchTypes
     {

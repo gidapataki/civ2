@@ -7,8 +7,8 @@
     <ProjectGuid>{5B6CA563-CDC4-4419-97AD-FCBAD4D16B81}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Alice</RootNamespace>
-    <AssemblyName>Alice</AssemblyName>
+    <RootNamespace>CivPlayer</RootNamespace>
+    <AssemblyName>Rikku</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,17 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\CapitalPlaces.cs" />
+    <Compile Include="Rikkku.cs" />
     <Compile Include="Enums\DirectionTypes.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
-    <Compile Include="Helpers\GeometryHelper.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Player.Common.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\ResearchTypes.cs" />
     <Compile Include="Enums\UnitTypes.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Player.Common.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
