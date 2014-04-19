@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+
 namespace CivPlayer.Enums
 {
     public enum ResearchType
     {
+        [Description("")]
+        None,
+
         [Description("falu")]
         Falu,
 

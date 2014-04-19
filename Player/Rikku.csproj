@@ -43,8 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rikkku.cs" />
-    <Compile Include="Enums\DirectionTypes.cs" />
+    <Compile Include="Strategy.cs" />
+    <Compile Include="Player.Rikku.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Player.Common.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -18,6 +18,10 @@ namespace CivPlayer
 		private PlayerInfo myPlayer;
 		private UnitInfo[] myUnits;
 		private CityInfo[] myCities;
+		
+		private UnitInfo[] enemyUnits;
+		private CityInfo[] enemyCities;
+
 
 		public abstract string PlayerName { get; }
 
@@ -33,14 +37,91 @@ namespace CivPlayer
 			UpdateStats();
 		}
 
+		public ResearchData OnResearch() // API-2
+		{
+			return TryResearch(ResearchType.OrzokTornya);
+		}
+
+		public BuildingData OnBuilding() // API-3
+		{
+			return null;
+		}
+
+		public TrainingData OnTraining() // API-4
+		{
+			if (Math.Min(20, myCities.Count() * 5) <= myUnits.Count()) { return null; }
+			else
+			{
+				var city = myCities.First();
+				return TryTraining(city, UnitType.Felderito);
+			}
+		}
+
+		public void ActionResult(WorldInfo world) // API
+		{
+			this.world = world;
+			UpdateStats();
+		}
+		
+		public void CityLost(int positionX, int positionY) // API
+		{}
+
+		public void EnemyDestroyed(string playerName) // API
+		{}
+
+		public void GameOver(bool winner, string message) // API
+		{}
+
+		public void UnitLost(string unitID) // API
+		{}
 
 		private void UpdateStats()
 		{
 			myPlayer = world.Players.Single(p => p.Name == PlayerName);
 			myUnits = world.Units.Where(p => p.Owner == PlayerName && p.HitPoints > 0).ToArray();
 			myCities = world.Cities.Where(p => p.Owner == PlayerName).ToArray();
+			enemyUnits = world.Units.Where(p => p.Owner != PlayerName && p.HitPoints > 0).ToArray();
+			enemyCities = world.Cities.Where(p => p.Owner != PlayerName).ToArray();
 		}
 
+		public UnitInfo[] Units
+		{
+			get { return myUnits; }
+		}
+
+		public UnitInfo[] EnemyUnits
+		{
+			get { return enemyUnits; }
+		}
+
+		public CityInfo[] Cities
+		{
+			get { return myCities; }
+		}
+
+		public CityInfo[] EnemyCities
+		{
+			get { return enemyCities; }
+		}
+
+		public int Money 
+		{
+			get { return myPlayer.Money; }
+		}
+
+		public string[] Researched
+		{
+			get { return myPlayer.Researched; }
+		}
+
+
+
+
+
+
+
+
+		// -- remove --
 
 		private MovementData Movement(UnitInfo unit, int x, int y)
 		{
@@ -72,7 +153,6 @@ namespace CivPlayer
 			}
 			return null;
 		}
-
 
 		private ResearchData Research(ResearchType research)
 		{
@@ -138,16 +218,6 @@ namespace CivPlayer
 				: null;
 		}
 
-		public ResearchData OnResearch() // API-2
-		{
-			return TryResearch(ResearchType.OrzokTornya);
-		}
-
-
-		public BuildingData OnBuilding() // API-3
-		{
-			return null;
-		}
 
 
 		private TrainingData Training(CityInfo city, UnitType unitType)
@@ -197,42 +267,5 @@ namespace CivPlayer
 		}
 
 
-		public TrainingData OnTraining() // API-4
-		{
-			if (Math.Min(20, myCities.Count() * 5) <= myUnits.Count()) { return null; }
-			else
-			{
-				var city = myCities.First();
-				return TryTraining(city, UnitType.Felderito);
-			}
-		}
-
-
-		public void ActionResult(WorldInfo world) // API
-		{
-			this.world = world;
-			UpdateStats();
-		}
-
-		
-		public void CityLost(int positionX, int positionY) // API
-		{
-
-		}
-
-		public void EnemyDestroyed(string playerName) // API
-		{
-
-		}
-
-		public void GameOver(bool winner, string message) // API
-		{
-
-		}
-
-		public void UnitLost(string unitID) // API
-		{
-
-		}
 	}
 }
