@@ -37,7 +37,7 @@ namespace CivPlayer
 		private void UpdateStats()
 		{
 			myPlayer = world.Players.Single(p => p.Name == PlayerName);
-			myUnits = world.Units.Where(p => p.Owner == PlayerName).ToList();
+			myUnits = world.Units.Where(p => p.Owner == PlayerName && p.HitPoints > 0).ToList();
 			myCities = world.Cities.Where(p => p.Owner == PlayerName).ToList();
 		}
 
