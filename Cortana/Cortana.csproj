@@ -31,11 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CivSharp.Common">
-      <HintPath>..\CivSharp 2\CivSharp.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Core\bin\Debug\Core.dll</HintPath>
+      <HintPath>D:\CivSharp 2\CivSharp.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,13 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Core\Enums\ResearchTypes.cs">
+      <Link>ResearchTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\Enums\UnitTypes.cs">
+      <Link>UnitTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\Helpers\EnumHelper.cs">
+      <Link>EnumHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\Player.Common.cs">
+      <Link>Player.Common.cs</Link>
+    </Compile>
     <Compile Include="Cortana.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Core\bin\Debug\Core.dll">
-      <Link>Core.dll</Link>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

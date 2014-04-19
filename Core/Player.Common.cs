@@ -23,7 +23,7 @@ namespace CivPlayer
 
 		public string PlayerRace // API
 		{
-			get { return "civ2"; }
+			get { return "civ1"; }
 		}
 
 		public void RefreshWorldInfo(int turn, WorldInfo world) // API
