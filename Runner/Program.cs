@@ -13,6 +13,9 @@ namespace Runner
 
 		static string[] players = new string[] 
 		{
+			//"Alice", 
+			//"Ellen",
+			//"Arya",
 			"Cortana",
 			"Rikku",
 		};
@@ -35,6 +38,8 @@ namespace Runner
 			procInfo.WorkingDirectory = Path.GetFullPath(civDir);
 			var proc = Process.Start(procInfo);
 			proc.WaitForExit();
+			//Console.WriteLine("exited");
+			//Console.ReadLine();
 
 			foreach (var i in players)
 			{
