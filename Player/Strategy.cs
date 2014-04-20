@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using CivSharp.Common;
 using CivPlayer.Enums;
 using CivPlayer.Helpers;
@@ -8,17 +9,107 @@ using CivPlayer.Helpers;
 namespace CivPlayer
 {
 
+	public delegate int UnitFitness(UnitInfo unit);
+	public delegate int PositionFitness(Position pos);
 
-	class Strategy
+
+	public class UnitWeight
 	{
-		private Player player;
-		
-		public Strategy(Player player) 
+		public int Felderito { get; set; }
+		public int Lovag { get; set; }
+		public int Orzo { get; set; }
+		public int Tanonc { get; set; }
+		public int Mester { get; set; }
+
+		public UnitWeight(int F, int L, int O, int T, int M)
 		{
-			this.player = player; 
+			Felderito = F;
+			Lovag = L;
+			Orzo = O;
+			Tanonc = T;
+			Mester = M;
 		}
 
-		public static int UnitCost(UnitType type) 
+		public int Of(UnitType type)
+		{
+			switch (type)
+			{
+				case UnitType.Felderito: return Felderito;
+				case UnitType.Lovag: return Lovag;
+				case UnitType.Orzo: return Orzo;
+				case UnitType.Tanonc: return Tanonc;
+				case UnitType.Mester: return Mester;
+				default: return 0;
+			}
+		}
+
+		public int Of(UnitInfo unit)
+		{
+			return Of(Strategy.GetUnitType(unit));
+		}
+	}
+
+	public class TrackedUnit
+	{
+		public UnitInfo unit { get; private set; }
+
+		public TrackedUnit(UnitInfo unit)
+		{
+			this.unit = unit;
+		}
+
+		public void Refresh(WorldInfo world)
+		{
+			if (this.unit != null)
+			{
+				foreach (var unit in world.Units)
+				{
+					if (unit.UnitID == this.unit.UnitID)
+					{
+						this.unit = unit.HitPoints >= 0 ? unit : null;
+						break;
+					}
+				}
+			}
+		}
+
+		public static implicit operator UnitInfo(TrackedUnit unit)
+		{
+			return unit.unit;
+		}
+
+		public static implicit operator bool(TrackedUnit unit)
+		{
+			return unit != null && unit.unit != null;
+		}
+	}
+
+
+
+
+	public class Strategy
+	{
+		protected Player player;
+		protected List<TrackedUnit> trackedUnits;
+		protected Random random;
+
+		public Strategy(Player player)
+		{
+			this.player = player;
+			random = new Random();
+			trackedUnits = new List<TrackedUnit>();
+		}
+
+		public static UnitType GetUnitType(UnitInfo unit)	// should be a helper somewhere else
+		{
+			foreach (UnitType type in Enum.GetValues(typeof(UnitType)))
+			{
+				if (type.GetDescription() == unit.UnitTypeName) { return type; }
+			}
+			return UnitType.None;
+		}
+
+		public static int UnitCost(UnitType type)
 		{
 			switch (type)
 			{
@@ -28,12 +119,13 @@ namespace CivPlayer
 				case UnitType.Tanonc: return 100;
 				case UnitType.Mester: return 200;
 				default: return 0;
-			}		
+			}
 		}
 
 		public static ResearchType UnitRequirement(UnitType type)
 		{
-			switch (type) {
+			switch (type)
+			{
 				case UnitType.Felderito: return ResearchType.None;
 				case UnitType.Orzo: return ResearchType.OrzokTornya;
 				case UnitType.Lovag: return ResearchType.Kovacsmuhely;
@@ -63,7 +155,7 @@ namespace CivPlayer
 
 		public static ResearchType ResearchRequirement(ResearchType type)
 		{
-			switch (type) 
+			switch (type)
 			{
 				case ResearchType.Falu:
 				case ResearchType.OrzokTornya:
@@ -87,13 +179,14 @@ namespace CivPlayer
 
 		public static MovementData Move(UnitInfo unit, Position pos)
 		{
-			return new MovementData {
+			return new MovementData
+			{
 				UnitID = unit.UnitID,
 				FromX = unit.PositionX,
 				FromY = unit.PositionY,
 				ToX = pos.x,
 				ToY = pos.y,
-			};			
+			};
 		}
 
 		public static TrainingData Train(CityInfo city, UnitType unitType)
@@ -108,9 +201,9 @@ namespace CivPlayer
 
 		public static ResearchData Research(ResearchType res)
 		{
-			return new ResearchData 
-			{ 
-				WhatToResearch = res.GetDescription() 
+			return new ResearchData
+			{
+				WhatToResearch = res.GetDescription()
 			};
 		}
 
@@ -137,13 +230,13 @@ namespace CivPlayer
 
 		public bool CanMove(UnitInfo unit, Position pos)
 		{
-			var unitPos = new Position(unit);
-			return pos.IsValid() && unitPos.IsNeighbour(pos) &&	unit.MovementPoints > 0;
+			var unitPos = Position.Of(unit);
+			return pos.IsValid() && unitPos.IsNeighbour(pos) && unit.MovementPoints > 0;
 		}
 
 		public bool CanTrain(UnitType type)
 		{
-			return player.Units.Count() < Math.Min(20, player.Cities.Count() * 5) &&
+			return player.MyUnits.Count() < Math.Min(20, player.MyCities.Count() * 5) &&
 				HasResearch(UnitRequirement(type)) && HasMoney(UnitCost(type));
 		}
 
@@ -152,36 +245,189 @@ namespace CivPlayer
 			return !HasResearch(type) && HasResearch(ResearchRequirement(type)) && HasMoney(ResearchCost(type));
 		}
 
+		public bool IsCity(Position pos)
+		{
+			return IsMyCity(pos) || IsEnemyCity(pos);
+		}
+
+		public int[] CityDistances(Position pos)
+		{
+			return player.AllCities.Select(city => Position.Of(city).Distance(pos)).ToArray();
+		}
+
+
 		public bool IsMyCity(Position pos)
 		{
-			foreach (var city in player.Cities) {
-				if (city.PositionX == pos.x && city.PositionY == pos.y) { return true; }
+			foreach (var city in player.MyCities)
+			{
+				if (Position.Of(city).Equals(pos)) { return true; }
 			}
 			return false;
 		}
 
-		public bool IsEnemCity(Position pos)
+		public bool IsEnemyCity(Position pos)
 		{
-			foreach (var city in player.EnemyCities) {
-				if (city.PositionX == pos.x && city.PositionY == pos.y) { return true; }
+			foreach (var city in player.EnemyCities)
+			{
+				if (Position.Of(city).Equals(pos)) { return true; }
 			}
 			return false;
+		}
+
+		public bool CanColonize()
+		{
+			return HasMoney(300) && player.MyCities.Count() < 4;
 		}
 
 		public bool CanBuild(UnitInfo unit)
 		{
-			return !IsMyCity(new Position(unit)) && HasMoney(300);
+			return !IsMyCity(Position.Of(unit)) && CanColonize();
 		}
+
+		public UnitInfo FindUnit(UnitFitness fitnessFunc, UnitInfo[] units = null)
+		{
+			int fitness = Int32.MinValue;
+			UnitInfo candidate = null;
+			if (units == null) { units = player.MyUnits; }
+			foreach (var unit in units)
+			{
+				int f = fitnessFunc(unit);
+				if (f > fitness) { fitness = f; candidate = unit; }
+			}
+			return candidate;
+		}
+
+		public UnitInfo FindEnemyUnit(UnitFitness fitnessFunc)
+		{
+			return FindUnit(fitnessFunc, player.EnemyUnits);
+		}
+
+		public Position FindUnitTarget(UnitInfo unit, PositionFitness fitnessFunc)
+		{
+			Position pos = Position.Of(unit);
+			Position target = pos;
+			int fitness = fitnessFunc(pos);
+			int delta = unit.MovementPoints;
+
+			for (int x = -delta; x <= delta; ++x)
+			{
+				for (int y = -delta; y <= delta; ++y)
+				{
+					var p = pos.Offset(x, y);
+					if (p.IsValid() && !p.Equals(pos))
+					{
+						var f = fitnessFunc(p);
+						if (f > fitness) { fitness = f; target = p; }
+					}
+				}
+			}
+			return target;
+		}
+
+
+
+		public UnitWeight Weights(int Felderito = 0, int Lovag = 0, int Orzo = 0, int Tanonc = 0, int Mester = 0)
+		{
+			return new UnitWeight(Felderito, Lovag, Orzo, Tanonc, Mester);
+		}
+
+		public void ActionResult(WorldInfo world)
+		{
+			RefreshUnits(world);
+		}
+
+		public void RefreshUnits(WorldInfo world)
+		{
+			foreach (var u in trackedUnits)
+			{
+				u.Refresh(world);
+			}
+		}
+
+		public TrackedUnit Track(UnitInfo unit)
+		{
+			var u = new TrackedUnit(unit);
+			trackedUnits.Add(u);
+			return u;
+		}
+
+		public void Untrack(TrackedUnit unit)
+		{
+			trackedUnits.Remove(unit);
+		}
+
+		public virtual void BeforeMovement() { }
+		public virtual void BeforeResearch() { }
+		public virtual void BeforeBuilding() { }
+		public virtual void BeforeTraining() { }
+
+		public virtual MovementData OnMovement() { return null; }
+		public virtual ResearchData OnResearch() { return null; }
+		public virtual BuildingData OnBuilding() { return null; }
+		public virtual TrainingData OnTraining() { return null; }
 	}
 
 
 
-	class ColonizeStrategy
+
+
+	public class ColonizeStrategy : Strategy
 	{
-		// train.scout if no units
-		// move.[somewhere uncolonized] if CanColonize()
-		// build if money >= 300
-		
-		// move, res, build, train
+
+		private TrackedUnit builder;
+		private Position location;
+
+		public ColonizeStrategy(Player player)
+			: base(player)
+		{
+			builder = new TrackedUnit(null);
+		}
+
+		public override TrainingData OnTraining()
+		{
+			// train.scout if no units
+			if (player.MyUnits.Count() == 0 && CanTrain(UnitType.Felderito))
+			{
+				return Train(player.MyCities[0], UnitType.Felderito);
+			}
+			return null;
+		}
+
+		public override void BeforeMovement()
+		{
+			// move.[somewhere uncolonized] if CanColonize()
+			builder = Track(CanColonize()
+				? FindUnit((UnitInfo unit) =>
+					-Position.Of(unit).Distance(Position.Of(player.MyCities[0]))
+					+ Weights(Felderito: 100).Of(unit)
+				) : null);
+
+			if (builder)
+			{
+				location = FindUnitTarget(builder, (Position pos) =>
+					+(IsCity(pos) ? -100 : 0)
+					+ random.Next(50)
+					);
+			}
+		}
+
+		public override MovementData OnMovement()
+		{
+			if (builder)
+			{
+				var pos = Position.Of(builder).Closer(location);
+				if (CanMove(builder, pos)) { return Move(builder, pos); }
+			}
+			return null;
+		}
+
+		public override BuildingData OnBuilding()
+		{
+			if (builder && CanBuild(builder))
+			{
+				return Build(builder);
+			}
+			return null;
+		}
 	}
 }

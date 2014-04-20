@@ -11,19 +11,33 @@ using CivPlayer.Helpers;
 
 namespace CivPlayer
 {
+
+	enum Phase
+	{
+		Turn, Movement, Research, Building, Training
+	}
+
 	public abstract class Player
 	{
 		private int turn;
+		private Phase phase;
 		private WorldInfo world;
 		private PlayerInfo myPlayer;
 		private UnitInfo[] myUnits;
-		private CityInfo[] myCities;
-		
 		private UnitInfo[] enemyUnits;
+		
+		private CityInfo[] myCities;
 		private CityInfo[] enemyCities;
 
+		protected Strategy strategy;
 
 		public abstract string PlayerName { get; }
+
+		public Player()
+		{
+			strategy = new ColonizeStrategy(this);
+		}
+
 
 		public string PlayerRace // API
 		{
@@ -34,33 +48,57 @@ namespace CivPlayer
 		{
 			this.turn = turn;
 			this.world = world;
+			phase = Phase.Turn;
 			UpdateStats();
 		}
 
-		public ResearchData OnResearch() // API-2
+		public MovementData OnMovement() // API
 		{
-			return TryResearch(ResearchType.OrzokTornya);
-		}
-
-		public BuildingData OnBuilding() // API-3
-		{
-			return null;
-		}
-
-		public TrainingData OnTraining() // API-4
-		{
-			if (Math.Min(20, myCities.Count() * 5) <= myUnits.Count()) { return null; }
-			else
+			if (strategy == null) { return null;  }
+			if (phase != Phase.Movement)
 			{
-				var city = myCities.First();
-				return TryTraining(city, UnitType.Felderito);
+				phase = Phase.Movement;
+				strategy.BeforeMovement();
 			}
+			return strategy.OnMovement();
+		}
+
+
+		public ResearchData OnResearch() // API
+		{
+			if (phase != Phase.Research)
+			{
+				phase = Phase.Research;
+				strategy.BeforeResearch();
+			}
+			return strategy.OnResearch();
+		}
+
+		public BuildingData OnBuilding() // API
+		{
+			if (phase != Phase.Building)
+			{
+				phase = Phase.Building;
+				strategy.BeforeBuilding();
+			}
+			return strategy.OnBuilding();
+		}
+
+		public TrainingData OnTraining() // API
+		{
+			if (phase != Phase.Training)
+			{
+				phase = Phase.Training;
+				strategy.BeforeTraining();
+			}
+			return strategy.OnTraining();
 		}
 
 		public void ActionResult(WorldInfo world) // API
 		{
 			this.world = world;
 			UpdateStats();
+			strategy.ActionResult(world);
 		}
 		
 		public void CityLost(int positionX, int positionY) // API
@@ -79,12 +117,18 @@ namespace CivPlayer
 		{
 			myPlayer = world.Players.Single(p => p.Name == PlayerName);
 			myUnits = world.Units.Where(p => p.Owner == PlayerName && p.HitPoints > 0).ToArray();
-			myCities = world.Cities.Where(p => p.Owner == PlayerName).ToArray();
 			enemyUnits = world.Units.Where(p => p.Owner != PlayerName && p.HitPoints > 0).ToArray();
+
+			myCities = world.Cities.Where(p => p.Owner == PlayerName).ToArray();
 			enemyCities = world.Cities.Where(p => p.Owner != PlayerName).ToArray();
 		}
 
-		public UnitInfo[] Units
+		public UnitInfo[] AllUnits
+		{
+			get { return world.Units; }
+		}
+
+		public UnitInfo[] MyUnits
 		{
 			get { return myUnits; }
 		}
@@ -94,7 +138,12 @@ namespace CivPlayer
 			get { return enemyUnits; }
 		}
 
-		public CityInfo[] Cities
+		public CityInfo[] AllCities
+		{
+			get { return world.Cities; }
+		}
+
+		public CityInfo[] MyCities
 		{
 			get { return myCities; }
 		}
@@ -113,159 +162,6 @@ namespace CivPlayer
 		{
 			get { return myPlayer.Researched; }
 		}
-
-
-
-
-
-
-
-
-		// -- remove --
-
-		private MovementData Movement(UnitInfo unit, int x, int y)
-		{
-			return new MovementData {
-				UnitID = unit.UnitID,
-				FromX = unit.PositionX,
-				FromY = unit.PositionY,
-				ToX = x,
-				ToY = y,
-			};
-		}
-
-
-		public MovementData OnMovement() // API-1
-		{
-			foreach (var unit in myUnits)
-			{
-				if (unit.MovementPoints > 0)
-				{
-					Func<int, int> sgn = (int y) => y < 0 ? -1 : (y > 0 ? 1 : 0);
-					Func<int, int> converge = (int y) => sgn(10 - y) + y;
-					var targetY = converge(unit.PositionY);
-
-					if (targetY != unit.PositionY)
-					{
-						return Movement(unit, unit.PositionX, targetY);
-					}
-				}
-			}
-			return null;
-		}
-
-		private ResearchData Research(ResearchType research)
-		{
-			return new ResearchData { WhatToResearch = research.GetDescription() };
-		}
-
-		private bool HasResearch(ResearchType research)
-		{
-			return myPlayer.Researched.Contains(research.GetDescription());
-		}
-
-		private bool CanResearch(ResearchType research)
-		{
-			switch (research) {
-				case ResearchType.Falu:
-				case ResearchType.OrzokTornya:
-				case ResearchType.Kovacsmuhely:
-				case ResearchType.Barakk:
-					return true;
-				case ResearchType.Varos:
-				case ResearchType.Varoshaza:
-				case ResearchType.Barikad:
-					return HasResearch(ResearchType.Falu);
-				case ResearchType.HarciAkademia:
-					return HasResearch(ResearchType.Barakk);
-				case ResearchType.Bank:
-					return HasResearch(ResearchType.Varos);
-				case ResearchType.Fal:
-					return HasResearch(ResearchType.Barikad);
-				default:
-					return false;
-			}
-		}
-
-		private static int ResearchCost(ResearchType research)
-		{
-			switch (research)
-			{
-				case ResearchType.Falu: return 200;
-				case ResearchType.Varos: return 300;
-				case ResearchType.OrzokTornya: return 100;
-				case ResearchType.Kovacsmuhely: return 150;
-				case ResearchType.Barakk: return 200;
-				case ResearchType.HarciAkademia: return 500;
-				case ResearchType.Varoshaza: return 150;
-				case ResearchType.Bank: return 300;
-				case ResearchType.Barikad: return 100;
-				case ResearchType.Fal: return 200;
-				default: return -1;
-			}
-		}
-
-		private bool HasMoney(int x)
-		{
-			return x >= 0 && myPlayer.Money >= x;
-		}
-
-
-		private ResearchData TryResearch(ResearchType research)
-		{
-			return !HasResearch(research) && CanResearch(research) && HasMoney(ResearchCost(research))
-				? Research(research)
-				: null;
-		}
-
-
-
-		private TrainingData Training(CityInfo city, UnitType unitType)
-		{
-			return new TrainingData
-			{
-				PositionX = city.PositionX,
-				PositionY = city.PositionY,
-				UnitTypeName = unitType.GetDescription(),
-			};
-		}
-
-
-		private static int TrainingCost(UnitType unitType)
-		{
-			switch (unitType)
-			{
-				case UnitType.Felderito: return 50;
-				case UnitType.Orzo: return 75;
-				case UnitType.Lovag: return 150;
-				case UnitType.Tanonc: return 100;
-				case UnitType.Mester: return 200;
-				default: return -1;
-			}
-		}
-
-
-		private bool CanTrain(UnitType unitType)
-		{
-			switch (unitType)
-			{
-				case UnitType.Felderito: return true;
-				case UnitType.Orzo: return HasResearch(ResearchType.OrzokTornya);
-				case UnitType.Lovag: return HasResearch(ResearchType.Kovacsmuhely);
-				case UnitType.Tanonc: return HasResearch(ResearchType.Barakk);
-				case UnitType.Mester: return HasResearch(ResearchType.HarciAkademia);
-				default: return false;
-			}
-		}
-
-
-		private TrainingData TryTraining(CityInfo city, UnitType unitType)
-		{
-			return CanTrain(unitType) && HasMoney(TrainingCost(unitType))
-				? Training(city, unitType)
-				: null;
-		}
-
 
 	}
 }

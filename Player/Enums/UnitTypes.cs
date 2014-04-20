@@ -4,6 +4,9 @@ namespace CivPlayer.Enums
 {
 	public enum UnitType
 	{
+		[Description("")]
+		None,
+
 		[Description("felderítő")]
 		Felderito,
 
