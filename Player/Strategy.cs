@@ -48,9 +48,9 @@ namespace CivPlayer
 			}
 		}
 
-		public int Of(UnitInfo unit)
+		public int Get(UnitInfo unit)
 		{
-			return Of(unit.GetUnitType());
+			return Get(unit.GetUnitType());
 		}
 	}
 
