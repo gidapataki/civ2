@@ -62,13 +62,10 @@ namespace CivPlayer
 		{
 			if (this.unit != null)
 			{
-				foreach (var unit in world.Units)
+				foreach (var unit in world.Units.Where(unit => unit.UnitID == this.unit.UnitID))
 				{
-					if (unit.UnitID == this.unit.UnitID)
-					{
-						this.unit = unit.HitPoints >= 0 ? unit : null;
-						break;
-					}
+					this.unit = unit.HitPoints >= 0 ? unit : null;
+					break;
 				}
 			}
 		}
@@ -102,11 +99,7 @@ namespace CivPlayer
 
 		public static UnitType GetUnitType(UnitInfo unit)	// should be a helper somewhere else
 		{
-			foreach (UnitType type in Enum.GetValues(typeof(UnitType)))
-			{
-				if (type.GetDescription() == unit.UnitTypeName) { return type; }
-			}
-			return UnitType.None;
+			return Enum.GetValues(typeof (UnitType)).Cast<UnitType>().FirstOrDefault(type => type.GetDescription() == unit.UnitTypeName);
 		}
 
 		public static int UnitCost(UnitType type)
@@ -258,20 +251,12 @@ namespace CivPlayer
 
 		public bool IsMyCity(Position pos)
 		{
-			foreach (var city in player.MyCities)
-			{
-				if (Position.Of(city).Equals(pos)) { return true; }
-			}
-			return false;
+			return player.MyCities.Any(city => Position.Of(city).Equals(pos));
 		}
 
 		public bool IsEnemyCity(Position pos)
 		{
-			foreach (var city in player.EnemyCities)
-			{
-				if (Position.Of(city).Equals(pos)) { return true; }
-			}
-			return false;
+			return player.EnemyCities.Any(city => Position.Of(city).Equals(pos));
 		}
 
 		public bool CanColonize()
@@ -386,7 +371,7 @@ namespace CivPlayer
 		public override TrainingData OnTraining()
 		{
 			// train.scout if no units
-			if (player.MyUnits.Count() == 0 && CanTrain(UnitType.Felderito))
+			if (!player.MyUnits.Any() && CanTrain(UnitType.Felderito))
 			{
 				return Train(player.MyCities[0], UnitType.Felderito);
 			}
