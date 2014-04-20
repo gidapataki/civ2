@@ -45,7 +45,7 @@ namespace CivPlayer
 
 		public int Of(UnitInfo unit)
 		{
-			return Of(Strategy.GetUnitType(unit));
+			return Of(unit.GetUnitType());
 		}
 	}
 
@@ -95,11 +95,6 @@ namespace CivPlayer
 			this.player = player;
 			random = new Random();
 			trackedUnits = new List<TrackedUnit>();
-		}
-
-		public static UnitType GetUnitType(UnitInfo unit)	// should be a helper somewhere else
-		{
-			return Enum.GetValues(typeof (UnitType)).Cast<UnitType>().FirstOrDefault(type => type.GetDescription() == unit.UnitTypeName);
 		}
 
 		public static int UnitCost(UnitType type)

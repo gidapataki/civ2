@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CivPlayer.Enums;
+using CivSharp.Common;
+using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace CivPlayer.Helpers
 {
@@ -15,5 +18,10 @@ namespace CivPlayer.Helpers
 
             return attribute == null ? value.ToString() : attribute.Description;
         }
+
+		public static UnitType GetUnitType(this UnitInfo unit)	// should be a helper somewhere else
+		{
+			return Enum.GetValues(typeof(UnitType)).Cast<UnitType>().FirstOrDefault(type => type.GetDescription() == unit.UnitTypeName);
+		}
     }
 }
