@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColonizeStrategy.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Position.cs" />
@@ -50,6 +51,8 @@
     <Compile Include="Player.Rikku.cs" />
     <Compile Include="Player.Common.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackedUnit.cs" />
+    <Compile Include="UnitWeight.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
