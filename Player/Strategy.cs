@@ -51,11 +51,11 @@ namespace CivPlayer
 
 	public class TrackedUnit
 	{
-		public UnitInfo unit { get; private set; }
+		public UnitInfo unit { get; set; }
 
-		public TrackedUnit(UnitInfo unit)
+		public TrackedUnit()
 		{
-			this.unit = unit;
+			this.unit = null;
 		}
 
 		public void Refresh(WorldInfo world)
@@ -324,11 +324,14 @@ namespace CivPlayer
 			}
 		}
 
-		public TrackedUnit Track(UnitInfo unit)
+		public void Track(TrackedUnit t, UnitInfo unit)
 		{
-			var u = new TrackedUnit(unit);
-			trackedUnits.Add(u);
-			return u;
+			if (t != null)
+			{
+				trackedUnits.Remove(t);
+				trackedUnits.Add(t);
+				t.unit = unit;
+			}
 		}
 
 		public void Untrack(TrackedUnit unit)
@@ -360,7 +363,7 @@ namespace CivPlayer
 		public ColonizeStrategy(Player player)
 			: base(player)
 		{
-			builder = new TrackedUnit(null);
+			builder = new TrackedUnit();
 		}
 
 		public override TrainingData OnTraining()
@@ -376,7 +379,7 @@ namespace CivPlayer
 		public override void BeforeMovement()
 		{
 			// move.[somewhere uncolonized] if CanColonize()
-			builder = Track(CanColonize()
+			Track(builder, CanColonize()
 				? FindUnit((UnitInfo unit) =>
 					-Position.Of(unit).Distance(Position.Of(player.MyCities[0]))
 					+ Weights(Felderito: 100).Of(unit)
