@@ -30,7 +30,12 @@ namespace CivPlayer
 			Mester = M;
 		}
 
-		public int Of(UnitType type)
+		public static UnitWeight Set(int Felderito = 0, int Lovag = 0, int Orzo = 0, int Tanonc = 0, int Mester = 0)
+		{
+			return new UnitWeight(Felderito, Lovag, Orzo, Tanonc, Mester);
+		}
+
+		public int Get(UnitType type)
 		{
 			switch (type)
 			{
@@ -306,10 +311,6 @@ namespace CivPlayer
 
 
 
-		public UnitWeight Weights(int Felderito = 0, int Lovag = 0, int Orzo = 0, int Tanonc = 0, int Mester = 0)
-		{
-			return new UnitWeight(Felderito, Lovag, Orzo, Tanonc, Mester);
-		}
 
 		public void ActionResult(WorldInfo world)
 		{
@@ -382,7 +383,7 @@ namespace CivPlayer
 			Track(builder, CanColonize()
 				? FindUnit((UnitInfo unit) =>
 					-Position.Of(unit).Distance(Position.Of(player.MyCities[0]))
-					+ Weights(Felderito: 100).Of(unit)
+					+ UnitWeight.Set(Felderito: 100).Get(unit)
 				) : null);
 
 			if (builder)
