@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using CivSharp.Common;
-using CivPlayer.Enums;
-using CivPlayer.Helpers;
 
 
 namespace CivPlayer

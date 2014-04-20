@@ -5,17 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using CivSharp.Common;
-using CivPlayer.Enums;
-using CivPlayer.Helpers;
 
 
 namespace CivPlayer
 {
-
-	enum Phase
-	{
-		Turn, Movement, Research, Building, Training
-	}
 
 	public abstract class Player
 	{

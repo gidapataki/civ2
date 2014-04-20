@@ -1,7 +1,5 @@
 ﻿using System;
 using CivSharp.Common;
-using CivPlayer.Enums;
-using CivPlayer.Helpers;
 
 
 namespace CivPlayer
