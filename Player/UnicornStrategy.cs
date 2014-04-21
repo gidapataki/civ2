@@ -12,6 +12,8 @@ namespace CivPlayer
 	class UnicornStrategy : Strategy
 	{
 
+		public bool needWall = false;
+
 		public UnicornStrategy(Player player)
 			: base(player)
 		{ }
@@ -39,11 +41,12 @@ namespace CivPlayer
 						if (TravelRounds(enemy, cpos) <= 1)
 						{
 							incoming = true;
-							if (ChanceToLose(cpos) > 0.5)
+							var threat = ChanceToLose(cpos);
+							if (threat > 0.5)
 							{
 								var success = DefendCity(city, UnitType.Lovag);
 								if (success) { grow = true; }
-								if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1))
+								if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1) && threat > 0.75)
 								{
 									plan.Want(UnitType.Felderito, cpos);
 								}
@@ -96,8 +99,8 @@ namespace CivPlayer
 					plan.Want(ResearchType.Varos);
 					plan.Want(ResearchType.Bank);
 				}
-				if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Barikad); }
-				if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal)) { plan.Want(ResearchType.Fal); }
+				if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && player.EnemyMoney < player.Money - 500) { plan.Want(ResearchType.Barikad); }
+				if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
 			}
 		}
 

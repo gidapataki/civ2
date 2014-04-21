@@ -69,24 +69,38 @@ namespace CivPlayer
 			//	plan.Want(UnitType.Lovag, trainAt, 10);
 			//}
 
-			if (!HasResearch(ResearchType.Barakk))	// tanonc!
-				plan.Want(ResearchType.Barakk);
-
-			if (HasResearch(ResearchType.HarciAkademia))
+			if (!HasResearch(ResearchType.Barakk))
 			{
-				if (HasBudgetFor(Mester: 19))
+				plan.Want(ResearchType.Barakk);
+			}
+			else
+			{
+				if (HasBudgetFor(Tanonc: 1))
 				{
 					rush = true;
 				}
 				if (rush)
 				{
-					plan.Want(UnitType.Mester, trainAt, 19);
+					plan.Want(UnitType.Tanonc, trainAt, 1);
 				}
 			}
-			else
-			{
-				plan.Want(ResearchType.HarciAkademia);
-			}
+
+
+			//if (HasResearch(ResearchType.HarciAkademia))
+			//{
+			//	if (HasBudgetFor(Mester: 19))
+			//	{
+			//		rush = true;
+			//	}
+			//	if (rush)
+			//	{
+			//		plan.Want(UnitType.Mester, trainAt, 19);
+			//	}
+			//}
+			//else
+			//{
+			//	plan.Want(ResearchType.HarciAkademia);
+			//}
 
 
 			// attack:
@@ -94,6 +108,7 @@ namespace CivPlayer
 			{
 				var target = FindUnitTarget(unit, pos =>
 					 - EnemyDistance(pos)
+					 + (pos.x != 0 ? 1 : 0)
 					+ (IsEnemyCity(pos) ? 100 : 0)
 					+ (IsEnemyUnitAt(pos) ? -10 : 0)
 				);

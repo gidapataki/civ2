@@ -16,6 +16,7 @@ namespace CivPlayer
 		private Phase phase;
 		public WorldInfo world { get; private set; }
 		private PlayerInfo myPlayer;
+		private PlayerInfo enemyPlayer;
 		private UnitInfo[] myUnits;
 		private UnitInfo[] enemyUnits;
 		
@@ -104,6 +105,7 @@ namespace CivPlayer
 		private void UpdateStats()
 		{
 			myPlayer = world.Players.Single(p => p.Name == PlayerName);
+			enemyPlayer = world.Players.Single(p => p.Name != PlayerName);
 			myUnits = world.Units.Where(p => p.Owner == PlayerName && p.HitPoints > 0).ToArray();
 			enemyUnits = world.Units.Where(p => p.Owner != PlayerName && p.HitPoints > 0).ToArray();
 
@@ -142,6 +144,12 @@ namespace CivPlayer
 			get { return myPlayer.Money; }
 		}
 
+		public int EnemyMoney
+		{
+			get { return enemyPlayer.Money; }
+		}
+
+	
 		public string[] Researched
 		{
 			get { return myPlayer.Researched; }

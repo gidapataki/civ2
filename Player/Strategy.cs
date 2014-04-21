@@ -362,9 +362,12 @@ namespace CivPlayer
 		public double ChanceToLose(Position pos)
 		{
 			var plannedUnits = plan.TrainingList.Where(t => t.Item2.Equals(pos)).Select(t => t.Item1).ToArray();
-
-			var survive = Battle.WillDefendersSurvive(player.world,
-				player.EnemyUnits.Where(u => TravelRounds(u, pos) <= 1).ToArray(), pos, plannedUnits);
+			var threat = player.EnemyUnits.Where(u => TravelRounds(u, pos) <= 1).ToArray();
+			if (threat.Count() == 1 && threat.Any(u => u.GetUnitType() == UnitType.Felderito))
+			{
+				return 0.6; 
+			}
+			var survive = Battle.WillDefendersSurvive(player.world, threat, pos, plannedUnits);
 
 			return survive ? 0 : 1;
 		}
