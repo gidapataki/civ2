@@ -8,6 +8,12 @@ using CivSharp.Common;
 namespace CivPlayer
 {
 
+	// hp * v   30 
+
+
+	// IsDefendedBy(pos, unittype
+
+
 	public class UnitWeight
 	{
 		public int Felderito { get; set; }

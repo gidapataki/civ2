@@ -16,8 +16,17 @@ namespace CivPlayer
 
 		public override void PlotMasterPlan()
 		{
-			plan.Want(UnitType.Felderito, Position.Of(player.MyCities.First()));
+			//if (HasBudgetFor(Felderito: 2))
+			//plan.Want(UnitType.Felderito, Position.Of(
+			//(pos => EnemyDistance(pos)).First()), 1);
 
+			if (HasResearch(ResearchType.Barakk))
+				plan.Want(UnitType.Tanonc, Position.Of(SortMyCities(pos => -EnemyDistance(pos)).First()), 1);
+			else
+				plan.Want(ResearchType.Barakk);
+			
+
+			// attack:
 			foreach (var unit in player.MyUnits)
 			{
 				var target = FindUnitTarget(unit, pos =>
@@ -31,12 +40,12 @@ namespace CivPlayer
 
 			if (NumberOfCities >= 4)
 			{
-				if (HasMoneyFor(Falu: 1, Varoshaza: 1) && !HasResearch(ResearchType.Varoshaza))
+				if (HasBudgetFor(Falu: 1, Varoshaza: 1) && !HasResearch(ResearchType.Varoshaza))
 				{
 					plan.Want(ResearchType.Falu);
 					plan.Want(ResearchType.Varoshaza);
 				}
-				if (HasMoneyFor(Varos: 1, Bank: 1) && !HasResearch(ResearchType.Bank))
+				if (HasBudgetFor(Varos: 1, Bank: 1) && !HasResearch(ResearchType.Bank))
 				{
 					plan.Want(ResearchType.Varos);
 					plan.Want(ResearchType.Bank);

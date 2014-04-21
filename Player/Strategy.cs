@@ -122,6 +122,16 @@ namespace CivPlayer
 			return player.Money >= cost;
 		}
 
+		public bool HasBudget(int cost)
+		{
+			return player.Money - plan.PlanCost >= cost;
+		}
+
+		public bool IsPlanned(ResearchType type)
+		{
+			return plan.ResearchList.Contains(type);
+		}
+
 		public bool HasResearch(ResearchType type)
 		{
 			return type == ResearchType.None || player.Researched.Contains(type.GetDescription());
@@ -154,16 +164,47 @@ namespace CivPlayer
 			return player.EnemyUnits.Any(unit => Position.Of(unit).Equals(pos));
 		}
 
-		public bool IsDefended(CityInfo city)
+		public bool IsDefendedBy(CityInfo city, UnitType type)
 		{
 			var pos = Position.Of(city);
-			return IsMyUnitAt(pos) || IsEnemyUnitAt(pos);
+			return MyUnitsAt(pos).Concat(EnemyUnitsAt(pos)).Any(p => p.GetUnitType().Equals(type));
+		}
+
+		public bool DefendCity(CityInfo city, UnitType type)
+		{
+			var pos = Position.Of(city);
+			var res = UnitRequirement(type);
+			var rcost = Constant.ResearchCost(res);
+			var ucost = Constant.UnitCost(type);
+
+			if (!HasResearch(res) && !IsPlanned(res) && HasBudget(rcost + ucost))
+			{
+				plan.Want(res);
+				plan.Want(type, pos);
+				return true;
+			}
+			else if ((HasResearch(res) || IsPlanned(res)) && HasBudget(ucost))
+			{
+				plan.Want(type, pos);
+				return true;
+			}
+			return false;
+		}
+
+		public UnitInfo[] MyUnitsAt(Position pos)
+		{
+			return player.MyUnits.Where(p => Position.Of(p).Equals(pos)).ToArray();
+		}
+
+		public UnitInfo[] EnemyUnitsAt(Position pos)
+		{
+			return player.EnemyUnits.Where(p => Position.Of(p).Equals(pos)).ToArray();
 		}
 
 		public int TravelRounds(UnitInfo unit, Position pos)
 		{
 			var dist = Position.Of(unit).Distance(pos);
-			var div = Constant.MovementPoints(unit.GetUnitType());
+			var div = Constant.UnitStats(unit.GetUnitType()).Movement;
 			return (dist + div - 1)/div;
 		}
 
@@ -171,6 +212,15 @@ namespace CivPlayer
 		{
 			return IsMyCity(pos) || IsEnemyCity(pos);
 		}
+
+		public CityInfo[] SortMyCities(PositionFitness fitnessFunc)
+		{
+			return player.MyCities.Select(city => Tuple.Create(fitnessFunc(Position.Of((city))), city))
+				.OrderBy(p => -p.Item1)
+				.Select(p => p.Item2)
+				.ToArray();
+		}
+
 
 		public int[] CityDistances(Position pos)
 		{
@@ -194,12 +244,12 @@ namespace CivPlayer
 
 		public bool CanColonize()
 		{
-			return HasMoney(Constant.ColonyCost) && player.MyCities.Count() < 4;
+			return HasBudgetFor(Colony: 1) && player.MyCities.Count() < 4;
 		}
 
 		public bool BeforeCanColonize()
 		{
-			return Money + Income >= Constant.ColonyCost + (player.MyUnits.Any() ? 0 : Constant.UnitCost(UnitType.Felderito));
+			return HasBudget(Constant.ColonyCost + (player.MyUnits.Any() ? 0 : Constant.UnitCost(UnitType.Felderito)) - Income);
 		}
 
 		public bool CanBuild(UnitInfo unit)
@@ -211,6 +261,13 @@ namespace CivPlayer
 		{
 			return IsMyUnitAt(pos) && !IsMyCity(pos) && CanColonize();
 		}
+
+
+		public double ChanceToLose(Position pos)
+		{
+			return 0;
+		}
+
 
 		public UnitInfo FindUnit(UnitFitness fitnessFunc, UnitInfo[] units = null)
 		{
@@ -252,12 +309,12 @@ namespace CivPlayer
 			return target;
 		}
 
-		public bool HasMoneyFor(
+		public bool HasBudgetFor(
 			int Felderito = 0, int Lovag = 0, int Orzo = 0, int Tanonc = 0, int Mester = 0,
 			int Colony = 0, int Falu = 0, int Varos = 0, int OrzokTornya = 0, int Kovacsmuhely = 0, int Barakk = 0, int HarciAkademia = 0, int Varoshaza = 0, int Bank = 0, int Barikad = 0, int Fal = 0,
 			bool NextRound = false)
 		{
-			var money = player.Money + (NextRound ? Income : 0);
+			var budget = player.Money + (NextRound ? Income : 0) - plan.PlanCost;
 			var cost = Felderito * Constant.UnitCost(UnitType.Felderito) +
 				Lovag * Constant.UnitCost(UnitType.Lovag) +
 				Orzo * Constant.UnitCost(UnitType.Orzo) +
@@ -275,7 +332,7 @@ namespace CivPlayer
 				Barikad * Constant.ResearchCost(ResearchType.Barikad) +
 				Fal * Constant.ResearchCost(ResearchType.Fal);
 
-			return money >= cost;
+			return budget >= cost;
 		}
 
 
@@ -286,7 +343,7 @@ namespace CivPlayer
 
 		public int Income
 		{
-			get { return (25 + (HasResearch(ResearchType.Varoshaza) ? 10 : 0) + (HasResearch(ResearchType.Bank) ? 20 : 0)) * player.MyCities.Count(); }
+			get { return (25 + (HasResearch(ResearchType.Varoshaza) ? 10 : 0) + (HasResearch(ResearchType.Bank) ? 20 : 0)) * Math.Min(4, player.MyCities.Count()); }
 		}
 
 		public int NumberOfUnits
@@ -311,6 +368,28 @@ namespace CivPlayer
 				u.Refresh(world);
 			}
 		}
+
+		/// <summary>
+		/// Chance and severity of a riposte
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="pos"></param>
+		/// <returns>damage, chance of riposte, expected damage</returns>
+		public Tuple<int, double, double> Riposte(UnitType type, Position pos)
+		{
+			var att = Constant.UnitStats(type).Attack;
+			var riposte = EnemyUnitsAt(pos)
+				.Select(p => Constant.UnitStats(p.GetUnitType()))
+				.Select(p => Tuple.Create(p.Defense, p.Damage, 1-Constant.ChanceToHit(att, p.Defense)))
+				.OrderBy(t => -t.Item1)
+				.FirstOrDefault();
+
+			if (riposte == null)
+				return Tuple.Create(0, 0.0, 0.0);
+			else
+				return Tuple.Create(riposte.Item2, riposte.Item3, riposte.Item2*riposte.Item3);
+		}
+
 
 		public ResearchData NextResearch()
 		{
@@ -350,6 +429,31 @@ namespace CivPlayer
 
 		public MovementData NextMovement()
 		{
+			while (plan.AttackList.Any())
+			{
+				var pos = plan.AttackList.First();
+				if (!IsEnemyUnitAt(pos))
+				{
+					plan.AttackList.RemoveAt(0);
+				}
+				else
+				{
+					UnitInfo defender = player.MyUnits.Where(unit => Position.Of(unit).Distance(pos) <= unit.MovementPoints && unit.GetUnitType() != UnitType.Felderito)
+							.Select(unit => Tuple.Create(unit.HitPoints, Riposte(unit.GetUnitType(), pos), unit))
+							.Select(t => Tuple.Create(t.Item1 - t.Item2.Item3, t.Item3))
+							.OrderBy(n => -n.Item1)
+							.Select(n => n.Item2)
+							.FirstOrDefault();
+
+					if (defender != null)
+					{
+						if (CanMove(defender, pos))
+							return Move(defender, pos);
+					}
+					plan.AttackList.RemoveAt(0);
+				}
+			}
+
 			while (plan.MovementList.Any())
 			{
 				var next = plan.MovementList.First();

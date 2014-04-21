@@ -36,6 +36,7 @@ namespace Runner
 
 			var procInfo = new ProcessStartInfo(Path.Combine(civDir, "CivSharpGame.exe"));
 			procInfo.WorkingDirectory = Path.GetFullPath(civDir);
+			procInfo.WindowStyle = ProcessWindowStyle.Maximized;
 			var proc = Process.Start(procInfo);
 			proc.WaitForExit();
 			//Console.WriteLine("exited");

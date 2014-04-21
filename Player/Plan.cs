@@ -8,16 +8,18 @@ using CivSharp.Common;
 namespace CivPlayer
 {
 
+
+
 	public class Plan
 	{
 		public List<Tuple<UnitType, Position>> TrainingList { get; private set; }
 		public List<Position> BuildList { get; private set; }
 		public List<ResearchType> ResearchList { get; private set; }
 		public List<Tuple<string, Position>> MovementList { get; private set; }
+		public List<Position> AttackList { get; private set; }
 
 		private List<Tuple<UnitType, Position>> TrainingList2;
 		private List<Position> BuildList2;
-		private List<ResearchType> ResearchList2;
 
 		public Plan()
 		{
@@ -25,20 +27,19 @@ namespace CivPlayer
 			BuildList = new List<Position>();
 			TrainingList = new List<Tuple<UnitType, Position>>();
 			MovementList = new List<Tuple<string, Position>>();
+			AttackList = new List<Position>();
 
-			ResearchList2 = new List<ResearchType>();
 			BuildList2 = new List<Position>();
 			TrainingList2 = new List<Tuple<UnitType, Position>>();
 		}
 
 		public void Bump()
 		{
-			ResearchList = ResearchList2;
 			BuildList = BuildList2;
 			TrainingList = TrainingList2;
 			MovementList = new List<Tuple<string, Position>>();
+			AttackList = new List<Position>();
 
-			ResearchList2 = new List<ResearchType>();
 			BuildList2 = new List<Position>();
 			TrainingList2 = new List<Tuple<UnitType, Position>>();
 		}
@@ -65,6 +66,11 @@ namespace CivPlayer
 				MovementList.Add(Tuple.Create(unit.UnitID, step));
 				p = step;
 			}
+		}
+
+		public void Attack(Position pos)
+		{
+			AttackList.Add(pos);
 		}
 
 		public void WantBuild(Position pos)
