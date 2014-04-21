@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 using CivSharp.Common;
 
 
@@ -54,9 +55,11 @@ namespace CivPlayer
 			attackNext = new Battallion[] { };
 		}
 
-		public static bool WillDefendersSurvive(WorldInfo world, UnitInfo[] att, Position def)
+		public static bool WillDefendersSurvive(WorldInfo world, UnitInfo[] att, Position def, UnitType[] planned)
 		{
 			var battle = new Battle(world, att, def);
+			battle.defenders = battle.defenders.Concat(planned.Select(u => new Battallion(u, Constant.UnitStats(u).Hp))).ToArray();
+
 			while (battle.attackers.Any())
 			{
 				while (battle.attackers.Any() && battle.defenders.Any())
@@ -311,6 +314,11 @@ namespace CivPlayer
 		}
 
 
+		public int MyClosestCity(Position pos)
+		{
+			return player.MyCities.Select(city => Position.Of(city).Distance(pos)).Min();
+		}
+		
 		public int[] CityDistances(Position pos)
 		{
 			return player.AllCities.Select(city => Position.Of(city).Distance(pos)).ToArray();
@@ -353,8 +361,10 @@ namespace CivPlayer
 
 		public double ChanceToLose(Position pos)
 		{
+			var plannedUnits = plan.TrainingList.Where(t => t.Item2.Equals(pos)).Select(t => t.Item1).ToArray();
+
 			var survive = Battle.WillDefendersSurvive(player.world,
-				player.EnemyUnits.Where(u => TravelRounds(u, pos) <= 1).ToArray(), pos);
+				player.EnemyUnits.Where(u => TravelRounds(u, pos) <= 1).ToArray(), pos, plannedUnits);
 
 			return survive ? 0 : 1;
 		}
@@ -520,6 +530,7 @@ namespace CivPlayer
 
 		public MovementData NextMovement()
 		{
+
 			while (plan.AttackList.Any())
 			{
 				var pos = plan.AttackList.First();
@@ -545,6 +556,8 @@ namespace CivPlayer
 				}
 			}
 
+
+
 			while (plan.MovementList.Any())
 			{
 				var next = plan.MovementList.First();
@@ -553,8 +566,58 @@ namespace CivPlayer
 				if (unit != null && CanMove(unit, next.Item2))
 					return Move(unit, next.Item2);
 			}
+
+			return Fallback();
+		}
+
+		public bool WontBuild(UnitInfo u)
+		{
+			var pos = Position.Of(u);
+			return !plan.BuildList.Any(p => p.Equals(pos));
+		}
+
+		public MovementData Fallback()
+		{
+			//	- not in town, back to town
+			//	- in town, find in range: should raise population
+			var lostUnit = player.MyUnits.FirstOrDefault(u => !IsMyCity(Position.Of(u)) && WontBuild(u) && u.MovementPoints > 0);
+			var cityUnits = player.MyUnits.Where(u => IsMyCity(Position.Of(u)) && u.GetUnitType() != UnitType.Felderito && u.MovementPoints > 0);
+
+			if (lostUnit != null)
+			{
+				var pos = Position.Of(lostUnit);
+				var target = FindUnitTarget(lostUnit, p =>
+					+ (IsMyCity(p) ? 100 : 0)
+					- (MyClosestCity(p)*1)
+					- (MyUnitsAt(p).Count()*5)
+					);
+
+				target = pos.Closer(target);
+				if (CanMove(lostUnit, target))
+				{
+					return Move(lostUnit, target);
+				}
+			}
+			else if (cityUnits.Any())
+			{
+				foreach (var u in cityUnits)
+				{
+					var pos = Position.Of(u);
+					var target = FindUnitTarget(u, p =>
+						+(IsMyCity(p) ? 100 : 0)
+						- (MyUnitsAt(p).Count() * 5)
+						);
+
+					target = pos.Closer(target);
+					if (CanMove(u, target))
+					{
+						return Move(u, target);
+					}
+				}
+			}
 			return null;
 		}
+
 
 		public void Track(TrackedUnit t, UnitInfo unit)
 		{
@@ -588,9 +651,6 @@ namespace CivPlayer
 		public virtual BuildingData OnBuilding() { return NextBuilding(); }
 		public virtual TrainingData OnTraining() { return NextTraining(); }
 	}
-
-
-
 
 
 }

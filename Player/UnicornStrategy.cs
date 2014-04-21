@@ -8,73 +8,79 @@ using CivSharp.Common;
 namespace CivPlayer
 {
 
-	
+
 	class UnicornStrategy : Strategy
 	{
 
 		public UnicornStrategy(Player player)
 			: base(player)
-		{}
+		{ }
 
 
 		public override void PlotMasterPlan()
 		{
-			var attack = false;
+			var incoming = false;
+			var grow = true;
 
-			foreach (var city in SortMyCities(pos => -EnemyDistance(pos)))
+
+			foreach (var city in player.EnemyCities)
 			{
-				var cpos = Position.Of(city);
-				foreach (var enemy in player.EnemyUnits)
+				plan.Attack(Position.Of(city));
+			}
+
+			while (grow)
+			{
+				grow = false;
+				foreach (var city in SortMyCities(pos => -EnemyDistance(pos)))
 				{
-					if (TravelRounds(enemy, cpos) <= 1)
+					var cpos = Position.Of(city);
+					foreach (var enemy in player.EnemyUnits)
 					{
-						attack = true;
-						if (ChanceToLose(cpos) > 0.5)
+						if (TravelRounds(enemy, cpos) <= 1)
 						{
-							var success = DefendCity(city, UnitType.Lovag);
-							if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1))
+							incoming = true;
+							if (ChanceToLose(cpos) > 0.5)
 							{
-								plan.Want(UnitType.Felderito, cpos);
+								var success = DefendCity(city, UnitType.Lovag);
+								if (success) { grow = true; }
+								if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1))
+								{
+									plan.Want(UnitType.Felderito, cpos);
+								}
 							}
+							if (enemy.GetUnitType() != UnitType.Felderito)
+							{
+								plan.Attack(Position.Of(enemy));
+							}
+							break;
 						}
-						break;
 					}
 				}
 			}
-			// colonize and defend!
 
-			if (attack)
+			if (BeforeCanColonize() && NumberOfUnits == 0)
 			{
-
+				plan.Want(UnitType.Felderito, Position.Of(player.MyCities.First()));
 			}
-			else
+
+			if (CanColonize(NumberOfCities > 1 ? 150 - Income : 0))
 			{
-				if (BeforeCanColonize() && NumberOfUnits == 0)
+				var builder = FindUnit(unit => UnitWeight.Set(Felderito: 5).Get(unit));
+
+				if (builder != null)
 				{
-					// check if deposit needed
-					// TravelRounds(unitinfo, pos)
-					plan.Want(UnitType.Felderito, Position.Of(player.MyCities.First()));
-				}
+					var bpos = Position.Of(builder);
+					var where = FindUnitTarget(builder, pos =>
+						+(IsCity(pos) ? -100 : 0)
+						+ (IsEnemyUnitAt(pos) ? -100 : 0)
+						- pos.CornerDistance() * 10
+						- pos.EdgeDistance() * 5
+						+ (bpos.x == pos.x ? 2 : 0)
+						- pos.Distance(bpos)
+						);
 
-				if (CanColonize(NumberOfCities > 1 ? 150 - Income : 0))
-				{
-					var builder = FindUnit(unit => UnitWeight.Set(Felderito: 5).Get(unit));
-
-					if (builder != null)
-					{
-						var bpos = Position.Of(builder);
-						var where = FindUnitTarget(builder, pos =>
-							+ (IsCity(pos) ? -100 : 0)
-							+ (IsEnemyUnitAt(pos) ? -100 : 0)
-							- pos.CornerDistance()*10
-							- pos.EdgeDistance()*5
-							+ (bpos.x == pos.x ? 2 : 0)
-							- pos.Distance(bpos)
-							);
-
-						plan.Want(builder, where);
-						plan.WantBuild(where);
-					}
+					plan.Want(builder, where);
+					plan.WantBuild(where);
 				}
 			}
 
@@ -90,6 +96,8 @@ namespace CivPlayer
 					plan.Want(ResearchType.Varos);
 					plan.Want(ResearchType.Bank);
 				}
+				if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Barikad); }
+				if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal)) { plan.Want(ResearchType.Fal); }
 			}
 		}
 

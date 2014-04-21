@@ -10,32 +10,38 @@ namespace CivPlayer
 	class RushStrategy : Strategy
 	{
 
+		private bool rush = false;
+		private bool mester = false;
+
 		public RushStrategy(Player player)
 			: base(player)
 		{}
 
 		public override void PlotMasterPlan()
 		{
-			//if (HasBudgetFor(Felderito: 2))
-			//plan.Want(UnitType.Felderito, Position.Of(
-			//(pos => EnemyDistance(pos)).First()), 1);
-
-			if (HasResearch(ResearchType.Barakk))
-				plan.Want(UnitType.Tanonc, Position.Of(SortMyCities(pos => -EnemyDistance(pos)).First()), 1);
-			else
-				plan.Want(ResearchType.Barakk);
-			
-
-			// attack:
-			foreach (var unit in player.MyUnits)
+			if (NumberOfUnits == 0)
 			{
-				var target = FindUnitTarget(unit, pos =>
-					 - EnemyDistance(pos)
-					+ (IsEnemyCity(pos) ? 100 : 0)
-					+ (IsEnemyUnitAt(pos) ? -10 : 0)
-				);
+				plan.Want(UnitType.Felderito, Position.Of(player.MyCities.First()));
+			}
+			else if (CanColonize())
+			{
+				var builder = FindUnit(unit => UnitWeight.Set(Felderito: 5).Get(unit));
 
-				plan.Want(unit, target);
+				if (builder != null)
+				{
+					var bpos = Position.Of(builder);
+					var where = FindUnitTarget(builder, pos =>
+						+ (IsCity(pos) ? -100 : 0)
+						+ (IsEnemyUnitAt(pos) ? -100 : 0)
+						- pos.CornerDistance()*10
+						- pos.EdgeDistance()*5
+						+ (bpos.x == pos.x ? 2 : 0)
+						- pos.Distance(bpos)
+						);
+
+					plan.Want(builder, where);
+					plan.WantBuild(where);
+				}
 			}
 
 			if (NumberOfCities >= 4)
@@ -51,6 +57,51 @@ namespace CivPlayer
 					plan.Want(ResearchType.Bank);
 				}
 			}
+
+			var trainAt = Position.Of(SortMyCities(pos => -EnemyDistance(pos)).First());
+
+			//if (!HasResearch(ResearchType.Kovacsmuhely))
+			//	plan.Want(ResearchType.Kovacsmuhely);
+
+			//if (HasResearch(ResearchType.Kovacsmuhely) && HasBudgetFor(Lovag: 10) && !mester)
+			//{
+			//	mester = true;
+			//	plan.Want(UnitType.Lovag, trainAt, 10);
+			//}
+
+			if (!HasResearch(ResearchType.Barakk))	// tanonc!
+				plan.Want(ResearchType.Barakk);
+
+			if (HasResearch(ResearchType.HarciAkademia))
+			{
+				if (HasBudgetFor(Mester: 19))
+				{
+					rush = true;
+				}
+				if (rush)
+				{
+					plan.Want(UnitType.Mester, trainAt, 19);
+				}
+			}
+			else
+			{
+				plan.Want(ResearchType.HarciAkademia);
+			}
+
+
+			// attack:
+			foreach (var unit in player.MyUnits)
+			{
+				var target = FindUnitTarget(unit, pos =>
+					 - EnemyDistance(pos)
+					+ (IsEnemyCity(pos) ? 100 : 0)
+					+ (IsEnemyUnitAt(pos) ? -10 : 0)
+				);
+	
+				if (unit.GetUnitType() != UnitType.Felderito || rush)
+					plan.Want(unit, target);
+			}
+
 		}
 
 

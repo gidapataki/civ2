@@ -70,7 +70,8 @@ namespace CivPlayer
 
 		public void Attack(Position pos)
 		{
-			AttackList.Add(pos);
+			if (!AttackList.Any(p => p.Equals(pos)))
+				AttackList.Add(pos);
 		}
 
 		public void WantBuild(Position pos)
