@@ -8,7 +8,6 @@ using CivSharp.Common;
 namespace CivPlayer
 {
 
-
 	public class UnitWeight
 	{
 		public int Felderito { get; set; }

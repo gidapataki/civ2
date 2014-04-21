@@ -8,6 +8,10 @@ namespace CivPlayer
 {
 	public class Cortana : Player, IPlayer
 	{
+		public Cortana()
+		{
+			strategy = new UnicornStrategy(this);
+		}
 
 		public override string PlayerName // API
 		{

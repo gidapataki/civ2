@@ -26,11 +26,6 @@ namespace CivPlayer
 
 		public abstract string PlayerName { get; }
 
-		public Player()
-		{
-			strategy = new ColonizeStrategy(this);
-		}
-
 
 		public string PlayerRace // API
 		{
@@ -43,11 +38,11 @@ namespace CivPlayer
 			this.world = world;
 			phase = Phase.Turn;
 			UpdateStats();
+			strategy.NewRound();
 		}
 
 		public MovementData OnMovement() // API
 		{
-			if (strategy == null) { return null;  }
 			if (phase != Phase.Movement)
 			{
 				phase = Phase.Movement;
@@ -116,10 +111,6 @@ namespace CivPlayer
 			enemyCities = world.Cities.Where(p => p.Owner != PlayerName).ToArray();
 		}
 
-		public UnitInfo[] AllUnits
-		{
-			get { return world.Units; }
-		}
 
 		public UnitInfo[] MyUnits
 		{

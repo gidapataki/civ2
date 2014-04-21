@@ -11,6 +11,11 @@ namespace CivPlayer
 	public class Rikku : Player, IPlayer
 	{
 
+		public Rikku()
+		{
+			strategy = new RushStrategy(this);
+		}
+
 		public override string PlayerName // API
 		{
 			get { return "Rikku"; }

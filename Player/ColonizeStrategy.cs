@@ -66,5 +66,20 @@ namespace CivPlayer
 			}
 			return null;
 		}
+
+		public override ResearchData OnResearch()
+		{
+			if (CanResearch(ResearchType.Falu))
+				return Research(ResearchType.Falu);
+			if (CanResearch(ResearchType.Varoshaza))
+				return Research(ResearchType.Varoshaza);
+			
+			if (CanResearch(ResearchType.Varos))
+				return Research(ResearchType.Varos);
+			if (CanResearch(ResearchType.Bank))
+				return Research(ResearchType.Bank);
+			
+			return null;
+		}
 	}
 }

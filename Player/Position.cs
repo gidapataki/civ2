@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Linq;
 using CivSharp.Common;
 
 
 namespace CivPlayer
 {
-
+	
 	public class Position
 	{
 		public readonly int x;
@@ -43,17 +44,22 @@ namespace CivPlayer
 
 		public bool IsValid()
 		{
-			return x >= 0 && y >= 0 && x < 20 && y < 20;
+			return x >= 0 && y >= 0 && x < Constant.BoardSize && y < Constant.BoardSize;
 		}
-
+		
 		public bool Equals(Position p)
 		{
-			return (object) p != null && x == p.x && y == p.y;
+			return p != null && x == p.x && y == p.y;
 		}
 
 		public int Distance(Position p)
 		{
 			return Math.Max(Math.Abs(p.x - x), Math.Abs(p.y - y));
+		}
+
+		public int Distance(int px, int py)
+		{
+			return Math.Max(Math.Abs(px - x), Math.Abs(py - y));
 		}
 
 		public int HDistance(Position p)
@@ -65,6 +71,20 @@ namespace CivPlayer
 		{
 			return new Position(x + Math.Sign(p.x - x), y + Math.Sign(p.y - y));
 		}
+
+		public int EdgeDistance()
+		{
+			var c = Constant.BoardSize - 1;
+			return (new[] { x, y, c - x, c - y }).Min();
+		}
+
+		public int CornerDistance()
+		{
+			var c = Constant.BoardSize - 1;
+			return (new[] { Distance(0, 0), Distance(c, 0), Distance(0, c), Distance(c, c) }).Min();
+		}
+
+
 	}
 
 }

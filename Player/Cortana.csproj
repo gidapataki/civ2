@@ -45,14 +45,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColonizeStrategy.cs" />
+    <Compile Include="Constant.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Plan.cs" />
     <Compile Include="Player.Common.cs" />
     <Compile Include="Player.Cortana.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy.cs" />
     <Compile Include="TrackedUnit.cs" />
+    <Compile Include="UnicornStrategy.cs" />
     <Compile Include="UnitWeight.cs" />
   </ItemGroup>
   <ItemGroup />
