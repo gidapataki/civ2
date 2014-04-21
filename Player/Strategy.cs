@@ -12,6 +12,95 @@ namespace CivPlayer
 	public delegate int PositionFitness(Position pos);
 
 
+	public class Battallion
+	{
+		public int Attack { get; set; }
+		public int Defense { get; set; }
+		public int Damage { get; set; }
+		public double Hp { get; set; }
+		public int Movement { get; set; }
+		private double maxHp;
+		private double heal;
+
+		public Battallion(UnitType type, int hp, int dist = 1)
+		{
+			var stats = Constant.UnitStats(type);
+			Attack = stats.Attack;
+			Defense = stats.Defense;
+			Hp = hp;
+			Movement = stats.Movement - (dist - 1);
+			Damage = stats.Damage;
+			maxHp = stats.Hp;
+			heal = stats.Heal;
+		}
+
+		public void Heal()
+		{
+			Hp = Math.Min(Hp + heal, maxHp);
+		}
+	}
+
+
+	public class Battle
+	{
+		private Battallion[] attackers;
+		private Battallion[] attackNext;
+		private Battallion[] defenders;
+
+		private Battle(WorldInfo world, UnitInfo[] att, Position def)
+		{
+			defenders = world.Units.Where(u => u.HitPoints > 0 && Position.Of(u).Equals(def)).Select(u => new Battallion(u.GetUnitType(), u.HitPoints)).ToArray();
+			attackers = att.Select(u => new Battallion(u.GetUnitType(), u.HitPoints, Position.Of(u).Distance(def))).ToArray();
+			attackNext = new Battallion[] { };
+		}
+
+		public static bool WillDefendersSurvive(WorldInfo world, UnitInfo[] att, Position def)
+		{
+			var battle = new Battle(world, att, def);
+			while (battle.attackers.Any())
+			{
+				while (battle.attackers.Any() && battle.defenders.Any())
+				{
+					battle.Fight();
+				}
+				battle.NextTurn();
+			}
+			return battle.defenders.Any();
+		}
+
+		private Tuple<double, double> ExpectedInjury(Battallion att, Battallion def)
+		{
+			var chance = Constant.ChanceToHit(att.Attack, def.Defense);
+			return Tuple.Create((1 - chance)*def.Damage, chance*att.Damage);
+		}
+
+		private void NextTurn()
+		{
+			foreach (var u in defenders)
+			{
+				u.Heal();
+			}
+			attackers = attackNext;
+			attackNext = new Battallion[] { };
+		}
+
+
+		private void Fight()
+		{
+			// assert not empty
+			var def = defenders.OrderBy(u => - u.Defense*100 - u.Hp).First();
+			var att = attackers.OrderBy(u => - u.Attack).First();
+			var inj = ExpectedInjury(att, def);
+			att.Hp -= inj.Item1;
+			def.Hp -= inj.Item2;
+			att.Movement -= 1;
+
+			attackNext = attackers.Where(u => u.Movement == 0 && u.Hp > 0).ToArray();
+			attackers = attackers.Where(u => u.Movement > 0 && u.Hp > 0).ToArray();
+			defenders = defenders.Where(u => u.Hp > 0).ToArray();
+		}
+	}
+
 	public class Strategy
 	{
 		protected Player player;
@@ -205,7 +294,7 @@ namespace CivPlayer
 		{
 			var dist = Position.Of(unit).Distance(pos);
 			var div = Constant.UnitStats(unit.GetUnitType()).Movement;
-			return (dist + div - 1)/div;
+			return (dist + div - 1) / div;
 		}
 
 		public bool IsCity(Position pos)
@@ -242,9 +331,9 @@ namespace CivPlayer
 			return player.EnemyCities.Any(city => Position.Of(city).Equals(pos));
 		}
 
-		public bool CanColonize()
+		public bool CanColonize(int deposit = 0)
 		{
-			return HasBudgetFor(Colony: 1) && player.MyCities.Count() < 4;
+			return HasBudgetFor(Colony: 1, Deposit: deposit) && player.MyCities.Count() < 4;
 		}
 
 		public bool BeforeCanColonize()
@@ -262,12 +351,13 @@ namespace CivPlayer
 			return IsMyUnitAt(pos) && !IsMyCity(pos) && CanColonize();
 		}
 
-
 		public double ChanceToLose(Position pos)
 		{
-			return 0;
-		}
+			var survive = Battle.WillDefendersSurvive(player.world,
+				player.EnemyUnits.Where(u => TravelRounds(u, pos) <= 1).ToArray(), pos);
 
+			return survive ? 0 : 1;
+		}
 
 		public UnitInfo FindUnit(UnitFitness fitnessFunc, UnitInfo[] units = null)
 		{
@@ -311,26 +401,28 @@ namespace CivPlayer
 
 		public bool HasBudgetFor(
 			int Felderito = 0, int Lovag = 0, int Orzo = 0, int Tanonc = 0, int Mester = 0,
-			int Colony = 0, int Falu = 0, int Varos = 0, int OrzokTornya = 0, int Kovacsmuhely = 0, int Barakk = 0, int HarciAkademia = 0, int Varoshaza = 0, int Bank = 0, int Barikad = 0, int Fal = 0,
+			int Falu = 0, int Varos = 0, int OrzokTornya = 0, int Kovacsmuhely = 0, int Barakk = 0, int HarciAkademia = 0, int Varoshaza = 0, int Bank = 0, int Barikad = 0, int Fal = 0,
+			int Colony = 0, int Deposit = 0,
 			bool NextRound = false)
 		{
 			var budget = player.Money + (NextRound ? Income : 0) - plan.PlanCost;
-			var cost = Felderito * Constant.UnitCost(UnitType.Felderito) +
-				Lovag * Constant.UnitCost(UnitType.Lovag) +
-				Orzo * Constant.UnitCost(UnitType.Orzo) +
-				Tanonc * Constant.UnitCost(UnitType.Tanonc) +
-				Mester * Constant.UnitCost(UnitType.Mester) +
-				Colony * Constant.ColonyCost +
-				Falu * Constant.ResearchCost(ResearchType.Falu) +
-				Varos * Constant.ResearchCost(ResearchType.Varos) +
-				OrzokTornya * Constant.ResearchCost(ResearchType.OrzokTornya) +
-				Kovacsmuhely * Constant.ResearchCost(ResearchType.Kovacsmuhely) +
-				Barakk * Constant.ResearchCost(ResearchType.Barakk) +
-				HarciAkademia * Constant.ResearchCost(ResearchType.HarciAkademia) +
-				Varoshaza * Constant.ResearchCost(ResearchType.Varoshaza) +
-				Bank * Constant.ResearchCost(ResearchType.Bank) +
-				Barikad * Constant.ResearchCost(ResearchType.Barikad) +
-				Fal * Constant.ResearchCost(ResearchType.Fal);
+			var cost = Felderito*Constant.UnitCost(UnitType.Felderito) +
+			           Lovag*Constant.UnitCost(UnitType.Lovag) +
+			           Orzo*Constant.UnitCost(UnitType.Orzo) +
+			           Tanonc*Constant.UnitCost(UnitType.Tanonc) +
+			           Mester*Constant.UnitCost(UnitType.Mester) +
+			           Falu*Constant.ResearchCost(ResearchType.Falu) +
+			           Varos*Constant.ResearchCost(ResearchType.Varos) +
+			           OrzokTornya*Constant.ResearchCost(ResearchType.OrzokTornya) +
+			           Kovacsmuhely*Constant.ResearchCost(ResearchType.Kovacsmuhely) +
+			           Barakk*Constant.ResearchCost(ResearchType.Barakk) +
+			           HarciAkademia*Constant.ResearchCost(ResearchType.HarciAkademia) +
+			           Varoshaza*Constant.ResearchCost(ResearchType.Varoshaza) +
+			           Bank*Constant.ResearchCost(ResearchType.Bank) +
+			           Barikad*Constant.ResearchCost(ResearchType.Barikad) +
+			           Fal*Constant.ResearchCost(ResearchType.Fal) +
+			           Colony*Constant.ColonyCost +
+			           Deposit;
 
 			return budget >= cost;
 		}
@@ -380,16 +472,15 @@ namespace CivPlayer
 			var att = Constant.UnitStats(type).Attack;
 			var riposte = EnemyUnitsAt(pos)
 				.Select(p => Constant.UnitStats(p.GetUnitType()))
-				.Select(p => Tuple.Create(p.Defense, p.Damage, 1-Constant.ChanceToHit(att, p.Defense)))
+				.Select(p => Tuple.Create(p.Defense, p.Damage, 1 - Constant.ChanceToHit(att, p.Defense)))
 				.OrderBy(t => -t.Item1)
 				.FirstOrDefault();
 
 			if (riposte == null)
 				return Tuple.Create(0, 0.0, 0.0);
 			else
-				return Tuple.Create(riposte.Item2, riposte.Item3, riposte.Item2*riposte.Item3);
+				return Tuple.Create(riposte.Item2, riposte.Item3, riposte.Item2 * riposte.Item3);
 		}
-
 
 		public ResearchData NextResearch()
 		{

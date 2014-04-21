@@ -21,23 +21,23 @@ namespace CivPlayer
 		{
 			var attack = false;
 
-			foreach (var city in SortMyCities(pos => EnemyDistance(pos)))
+			foreach (var city in SortMyCities(pos => -EnemyDistance(pos)))
 			{
 				var cpos = Position.Of(city);
 				foreach (var enemy in player.EnemyUnits)
 				{
-					if (TravelRounds(enemy, cpos) == 1)
+					if (TravelRounds(enemy, cpos) <= 1)
 					{
 						attack = true;
-						if (!IsDefendedBy(city, UnitType.Lovag))
+						if (ChanceToLose(cpos) > 0.5)
 						{
 							var success = DefendCity(city, UnitType.Lovag);
 							if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1))
 							{
 								plan.Want(UnitType.Felderito, cpos);
-								break;
 							}
 						}
+						break;
 					}
 				}
 			}
@@ -56,7 +56,7 @@ namespace CivPlayer
 					plan.Want(UnitType.Felderito, Position.Of(player.MyCities.First()));
 				}
 
-				if (CanColonize())
+				if (CanColonize(NumberOfCities > 1 ? 150 - Income : 0))
 				{
 					var builder = FindUnit(unit => UnitWeight.Set(Felderito: 5).Get(unit));
 

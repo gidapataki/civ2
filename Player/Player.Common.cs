@@ -14,7 +14,7 @@ namespace CivPlayer
 	{
 		private int turn;
 		private Phase phase;
-		private WorldInfo world;
+		public WorldInfo world { get; private set; }
 		private PlayerInfo myPlayer;
 		private UnitInfo[] myUnits;
 		private UnitInfo[] enemyUnits;

@@ -12,14 +12,16 @@ namespace CivPlayer
 		public int Attack { get; set; }
 		public int Defense { get; set; }
 		public int Movement { get; set; }
+		public int Heal { get; set; }
 
-		public Stats(int dmg, int hp, int att, int def, int mp)
+		public Stats(int dmg, int hp, int att, int def, int mp, int heal)
 		{
 			Damage = dmg;
 			Hp = hp;
 			Attack = att;
 			Defense = def;
 			Movement = mp;
+			Heal = heal;
 		}
 	}
 
@@ -38,12 +40,12 @@ namespace CivPlayer
 		{
 			switch (type)
 			{
-				case UnitType.Felderito: return new Stats(2, 10, 2, 3, 4);
-				case UnitType.Orzo: return new Stats(5, 30, 6, 10, 1);
-				case UnitType.Lovag: return new Stats(15, 20, 12, 8, 1);
-				case UnitType.Tanonc: return new Stats(10, 10, 6, 6, 2);
-				case UnitType.Mester: return new Stats(10, 10, 100, 6, 2);
-				default: return new Stats(0, 0, 0, 0, 0);
+				case UnitType.Felderito: return new Stats(2, 10, 2, 3, 4, 1);
+				case UnitType.Orzo: return new Stats(5, 30, 6, 10, 1, 3);
+				case UnitType.Lovag: return new Stats(15, 20, 12, 8, 1, 2);
+				case UnitType.Tanonc: return new Stats(10, 10, 6, 6, 2, 1);
+				case UnitType.Mester: return new Stats(10, 10, 100, 6, 2, 1);
+				default: return new Stats(0, 0, 0, 0, 0, 0);
 			}
 		}
 
