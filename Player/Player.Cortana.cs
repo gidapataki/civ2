@@ -10,7 +10,7 @@ namespace CivPlayer
 	{
 		public Cortana()
 		{
-			strategy = new UnicornStrategy(this);
+			strategy = new CounterUnicornStrategy(this);
 		}
 
 		public override string PlayerName // API

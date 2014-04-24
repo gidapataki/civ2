@@ -102,38 +102,28 @@ namespace CivPlayer
 		public override void PlotMasterPlan()
 		{
 			DoFarming();
-			if (!mester && NeedUnit(UnitType.Mester, BattleCity, 5))
-			{
-				mester = true;
-			}
+			NeedUnit(UnitType.Tanonc, BattleCity, 1, true);
+			//if (!rush)
+			//{
+			//}
+			//else
+			//{
+			//	NeedUnit(UnitType.Mester, BattleCity, 1);
+			//}
+		
 
-			if (mester && !rush)
-			{
-				NeedUnit(UnitType.Orzo, BattleCity, 5, true);
-			}
-
-			if (rush)
-			{
-				if (HasBudgetFor(Orzo: 1, Mester: 1))
-				{
-					plan.Want(UnitType.Mester, BattleCity, 1);
-					plan.Want(UnitType.Orzo, BattleCity, 1);
-				}
-			}
 
 			// attack:
 			foreach (var unit in player.MyUnits)
 			{
 				var target = FindUnitTarget(unit, pos =>
-					+ (Position.Of(unit).Distance(pos) > 1 ? -100 : 0)
 					- EnemyDistance(pos)
-					 + (pos.x != 0 ? 1 : 0)
+					+ (pos.x != 0 ? 1 : 0)
 					+ (IsEnemyCity(pos) ? 100 : 0)
 					+ (IsEnemyUnitAt(pos) ? -10 : 0)
 				);
 
 				if (unit.GetUnitType() != UnitType.Felderito || rush)
-				if (rush)
 					plan.Want(unit, target);
 			}
 		}

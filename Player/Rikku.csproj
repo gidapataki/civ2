@@ -47,6 +47,7 @@
     <Compile Include="Battle.cs" />
     <Compile Include="ColonizeStrategy.cs" />
     <Compile Include="Constant.cs" />
+    <Compile Include="CounterUnicornStrategy.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Plan.cs" />

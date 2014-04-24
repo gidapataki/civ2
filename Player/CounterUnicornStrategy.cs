@@ -9,14 +9,18 @@ namespace CivPlayer
 {
 
 
-	class UnicornStrategy : Strategy
+	class CounterUnicornStrategy : Strategy
 	{
 
-		public bool needWall = false;
+		private bool needWall = false;
+		private bool sentInel = false;
+		private bool attack = false;
 
-		public UnicornStrategy(Player player)
+		public CounterUnicornStrategy(Player player)
 			: base(player)
-		{}
+		{
+			useFallback = true;
+		}
 
 		public override void PlotMasterPlan()
 		{
@@ -57,7 +61,7 @@ namespace CivPlayer
 				}
 			}
 
-			if (BeforeCanColonize() && NumberOfUnits == 0)
+			if (BeforeCanColonize() && NumberOfUnits == 0 && !sentInel)
 			{
 				plan.Want(UnitType.Felderito, Position.Of(player.MyCities.First()));
 			}
@@ -95,26 +99,35 @@ namespace CivPlayer
 					plan.Want(ResearchType.Varos);
 					plan.Want(ResearchType.Bank);
 				}
-				if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && player.EnemyMoney < player.Money - 500) { plan.Want(ResearchType.Barikad); }
+				if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && HasBudget(player.EnemyMoney + 800)) { plan.Want(ResearchType.Barikad); }
 				if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
+			}
 
-				if (player.PlayerName == "Rikku")
+
+			if (player.Turn > 75 && player.EnemyMoney >= player.Money - Income)
+			{
+				attack = true;
+			}
+
+			if (attack)
+			{
+				foreach (var unit in player.MyUnits)
 				{
-					// attack:
-					foreach (var unit in player.MyUnits)
-					{
-						var target = FindUnitTarget(unit, pos =>
-							-EnemyDistance(pos)
-							+ (pos.x != 0 ? 1 : 0)
-							+ (IsEnemyCity(pos) ? 100 : 0)
-							+ (IsEnemyUnitAt(pos) ? -10 : 0)
-							);
+					var target = FindUnitTarget(unit, pos =>
+						-EnemyDistance(pos)
+						+ (pos.x != 0 ? 1 : 0)
+						+ (IsEnemyCity(pos) ? 100 : 0)
+						+ (IsEnemyUnitAt(pos) ? -10 : 0)
+						);
 
-						if (unit.GetUnitType() == UnitType.Felderito)
-							plan.Want(unit, target);
+					if (unit.GetUnitType() == UnitType.Felderito)
+					{
+						sentInel = true;
+						plan.Want(unit, target);
 					}
 				}
 			}
+
 		}
 	}
 }

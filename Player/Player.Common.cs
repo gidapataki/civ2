@@ -12,7 +12,7 @@ namespace CivPlayer
 
 	public abstract class Player
 	{
-		private int turn;
+		public int Turn { get; private set; }
 		private Phase phase;
 		public WorldInfo world { get; private set; }
 		private PlayerInfo myPlayer;
@@ -35,7 +35,7 @@ namespace CivPlayer
 
 		public void RefreshWorldInfo(int turn, WorldInfo world) // API
 		{
-			this.turn = turn;
+			this.Turn = turn;
 			this.world = world;
 			phase = Phase.Turn;
 			UpdateStats();
