@@ -14,7 +14,10 @@ namespace CivPlayer
 
 		public RushStrategy(Player player)
 			: base(player)
-		{}
+		{
+			// rush please
+			useFallback = false;
+		}
 
 
 		private Position BasePosition
@@ -65,7 +68,7 @@ namespace CivPlayer
 			}
 		}
 
-		private Position ClosestCity
+		private Position BattleCity
 		{
 			get { return Position.Of(SortMyCities(pos => -EnemyDistance(pos)).First());	}
 		}
@@ -84,36 +87,55 @@ namespace CivPlayer
 			}
 		}
 
-		private void NeedUnit(UnitType type, Position pos, int n = 1, bool startRush = false)
+		private bool NeedUnit(UnitType type, Position pos, int n = 1, bool startRush = false)
 		{
 			NeedUnitRequirements(type);
 			if (HasResearch(Unit.Requirement(type)) && HasBudget(Unit.Cost(type)*n))
 			{
 				plan.Want(type, pos, n);
 				rush |= startRush;
+				return true;
 			}
+			return false;
 		}
 
 		public override void PlotMasterPlan()
 		{
 			DoFarming();
-			NeedUnit(UnitType.Mester, ClosestCity, 5, true);
-			//NeedUnit(UnitType.Mester, ClosestCity, rush ? 1 : 19, true);
+			if (!mester && NeedUnit(UnitType.Mester, BattleCity, 5))
+			{
+				mester = true;
+			}
+
+			if (mester && !rush)
+			{
+				NeedUnit(UnitType.Orzo, BattleCity, 5, true);
+			}
+
+			if (rush)
+			{
+				if (HasBudgetFor(Orzo: 1, Mester: 1))
+				{
+					plan.Want(UnitType.Mester, BattleCity, 1);
+					plan.Want(UnitType.Orzo, BattleCity, 1);
+				}
+			}
 
 			// attack:
 			foreach (var unit in player.MyUnits)
 			{
 				var target = FindUnitTarget(unit, pos =>
-					 - EnemyDistance(pos)
+					+ (Position.Of(unit).Distance(pos) > 1 ? -100 : 0)
+					- EnemyDistance(pos)
 					 + (pos.x != 0 ? 1 : 0)
 					+ (IsEnemyCity(pos) ? 100 : 0)
 					+ (IsEnemyUnitAt(pos) ? -10 : 0)
 				);
-	
+
 				if (unit.GetUnitType() != UnitType.Felderito || rush)
+				if (rush)
 					plan.Want(unit, target);
 			}
-
 		}
 
 

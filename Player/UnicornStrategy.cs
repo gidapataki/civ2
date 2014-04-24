@@ -16,8 +16,7 @@ namespace CivPlayer
 
 		public UnicornStrategy(Player player)
 			: base(player)
-		{ }
-
+		{}
 
 		public override void PlotMasterPlan()
 		{
