@@ -21,7 +21,6 @@ namespace CivPlayer
 
 		public override void PlotMasterPlan()
 		{
-			var incoming = false;
 			var grow = true;
 
 
@@ -40,7 +39,6 @@ namespace CivPlayer
 					{
 						if (TravelRounds(enemy, cpos) <= 1)
 						{
-							incoming = true;
 							var threat = ChanceToLose(cpos);
 							if (threat > 0.5)
 							{
@@ -103,6 +101,9 @@ namespace CivPlayer
 				if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
 			}
 		}
+		// me.has.Research
+		// Has(ResearchType.Barikad)
+		// HasBudget(100)
 
 	}
 }

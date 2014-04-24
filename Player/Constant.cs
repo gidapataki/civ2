@@ -25,31 +25,15 @@ namespace CivPlayer
 		}
 	}
 
-	public class Constant
+	public class Unit
 	{
-		public const int ColonyCost = 300;
-		public const int BoardSize = 20;
-
 
 		public static double ChanceToHit(int attack, int defense)
 		{
-			return attack/(double) (attack + defense);
-		}
-		
-		public static Stats UnitStats(UnitType type)
-		{
-			switch (type)
-			{
-				case UnitType.Felderito: return new Stats(2, 10, 2, 3, 4, 1);
-				case UnitType.Orzo: return new Stats(5, 30, 6, 10, 1, 3);
-				case UnitType.Lovag: return new Stats(15, 20, 12, 8, 1, 2);
-				case UnitType.Tanonc: return new Stats(10, 10, 6, 6, 2, 1);
-				case UnitType.Mester: return new Stats(10, 10, 100, 6, 2, 1);
-				default: return new Stats(0, 0, 0, 0, 0, 0);
-			}
+			return attack / (double)(attack + defense);
 		}
 
-		public static int UnitCost(UnitType type)
+		public static int Cost(UnitType type)
 		{
 			switch (type)
 			{
@@ -62,7 +46,37 @@ namespace CivPlayer
 			}
 		}
 
-		public static int ResearchCost(ResearchType type)
+		public static ResearchType Requirement(UnitType type)
+		{
+			switch (type)
+			{
+				case UnitType.Felderito: return ResearchType.None;
+				case UnitType.Orzo: return ResearchType.OrzokTornya;
+				case UnitType.Lovag: return ResearchType.Kovacsmuhely;
+				case UnitType.Tanonc: return ResearchType.Barakk;
+				case UnitType.Mester: return ResearchType.HarciAkademia;
+				default: return ResearchType.None;
+			}
+		}
+
+		public static Stats Stats(UnitType type)
+		{
+			switch (type)
+			{
+				case UnitType.Felderito: return new Stats(2, 10, 2, 3, 4, 1);
+				case UnitType.Orzo: return new Stats(5, 30, 6, 10, 1, 3);
+				case UnitType.Lovag: return new Stats(15, 20, 12, 8, 1, 2);
+				case UnitType.Tanonc: return new Stats(10, 10, 6, 6, 2, 1);
+				case UnitType.Mester: return new Stats(10, 10, 100, 6, 2, 1);
+				default: return new Stats(0, 0, 0, 0, 0, 0);
+			}
+		}
+	}
+
+	public class Research
+	{
+
+		public static int Cost(ResearchType type)
 		{
 			switch (type)
 			{
@@ -78,6 +92,37 @@ namespace CivPlayer
 				case ResearchType.Fal: return 200;
 				default: return 0;
 			}
-		} 
+		}
+
+		public static ResearchType Requirement(ResearchType type)
+		{
+			switch (type)
+			{
+				case ResearchType.Falu:
+				case ResearchType.OrzokTornya:
+				case ResearchType.Kovacsmuhely:
+				case ResearchType.Barakk:
+					return ResearchType.None;
+				case ResearchType.Varos:
+				case ResearchType.Varoshaza:
+				case ResearchType.Barikad:
+					return ResearchType.Falu;
+				case ResearchType.HarciAkademia:
+					return ResearchType.Barakk;
+				case ResearchType.Bank:
+					return ResearchType.Varos;
+				case ResearchType.Fal:
+					return ResearchType.Barikad;
+				default:
+					return ResearchType.None;
+			}
+		}
+	}
+
+
+	public class Constant
+	{
+		public const int ColonyCost = 300;
+		public const int BoardSize = 20;
 	}
 }

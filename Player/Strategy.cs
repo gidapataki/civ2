@@ -13,97 +13,6 @@ namespace CivPlayer
 	public delegate int PositionFitness(Position pos);
 
 
-	public class Battallion
-	{
-		public int Attack { get; set; }
-		public int Defense { get; set; }
-		public int Damage { get; set; }
-		public double Hp { get; set; }
-		public int Movement { get; set; }
-		private double maxHp;
-		private double heal;
-
-		public Battallion(UnitType type, int hp, int dist = 1)
-		{
-			var stats = Constant.UnitStats(type);
-			Attack = stats.Attack;
-			Defense = stats.Defense;
-			Hp = hp;
-			Movement = stats.Movement - (dist - 1);
-			Damage = stats.Damage;
-			maxHp = stats.Hp;
-			heal = stats.Heal;
-		}
-
-		public void Heal()
-		{
-			Hp = Math.Min(Hp + heal, maxHp);
-		}
-	}
-
-
-	public class Battle
-	{
-		private Battallion[] attackers;
-		private Battallion[] attackNext;
-		private Battallion[] defenders;
-
-		private Battle(WorldInfo world, UnitInfo[] att, Position def)
-		{
-			defenders = world.Units.Where(u => u.HitPoints > 0 && Position.Of(u).Equals(def)).Select(u => new Battallion(u.GetUnitType(), u.HitPoints)).ToArray();
-			attackers = att.Select(u => new Battallion(u.GetUnitType(), u.HitPoints, Position.Of(u).Distance(def))).ToArray();
-			attackNext = new Battallion[] { };
-		}
-
-		public static bool WillDefendersSurvive(WorldInfo world, UnitInfo[] att, Position def, UnitType[] planned)
-		{
-			var battle = new Battle(world, att, def);
-			battle.defenders = battle.defenders.Concat(planned.Select(u => new Battallion(u, Constant.UnitStats(u).Hp))).ToArray();
-
-			while (battle.attackers.Any())
-			{
-				while (battle.attackers.Any() && battle.defenders.Any())
-				{
-					battle.Fight();
-				}
-				battle.NextTurn();
-			}
-			return battle.defenders.Any();
-		}
-
-		private Tuple<double, double> ExpectedInjury(Battallion att, Battallion def)
-		{
-			var chance = Constant.ChanceToHit(att.Attack, def.Defense);
-			return Tuple.Create((1 - chance)*def.Damage, chance*att.Damage);
-		}
-
-		private void NextTurn()
-		{
-			foreach (var u in defenders)
-			{
-				u.Heal();
-			}
-			attackers = attackNext;
-			attackNext = new Battallion[] { };
-		}
-
-
-		private void Fight()
-		{
-			// assert not empty
-			var def = defenders.OrderBy(u => - u.Defense*100 - u.Hp).First();
-			var att = attackers.OrderBy(u => - u.Attack).First();
-			var inj = ExpectedInjury(att, def);
-			att.Hp -= inj.Item1;
-			def.Hp -= inj.Item2;
-			att.Movement -= 1;
-
-			attackNext = attackers.Where(u => u.Movement == 0 && u.Hp > 0).ToArray();
-			attackers = attackers.Where(u => u.Movement > 0 && u.Hp > 0).ToArray();
-			defenders = defenders.Where(u => u.Hp > 0).ToArray();
-		}
-	}
-
 	public class Strategy
 	{
 		protected Player player;
@@ -119,43 +28,6 @@ namespace CivPlayer
 			trackedUnits = new List<TrackedUnit>();
 		}
 
-		public static ResearchType UnitRequirement(UnitType type)
-		{
-			switch (type)
-			{
-				case UnitType.Felderito: return ResearchType.None;
-				case UnitType.Orzo: return ResearchType.OrzokTornya;
-				case UnitType.Lovag: return ResearchType.Kovacsmuhely;
-				case UnitType.Tanonc: return ResearchType.Barakk;
-				case UnitType.Mester: return ResearchType.HarciAkademia;
-				default: return ResearchType.None;
-			}
-		}
-
-		public static ResearchType ResearchRequirement(ResearchType type)
-		{
-			switch (type)
-			{
-				case ResearchType.Falu:
-				case ResearchType.OrzokTornya:
-				case ResearchType.Kovacsmuhely:
-				case ResearchType.Barakk:
-					return ResearchType.None;
-				case ResearchType.Varos:
-				case ResearchType.Varoshaza:
-				case ResearchType.Barikad:
-					return ResearchType.Falu;
-				case ResearchType.HarciAkademia:
-					return ResearchType.Barakk;
-				case ResearchType.Bank:
-					return ResearchType.Varos;
-				case ResearchType.Fal:
-					return ResearchType.Barikad;
-				default:
-					return ResearchType.None;
-			}
-		}
-
 		public static MovementData Move(UnitInfo unit, Position pos)
 		{
 			return new MovementData
@@ -168,14 +40,12 @@ namespace CivPlayer
 			};
 		}
 
-
-		public static TrainingData Train(CityInfo city, UnitType unitType)
+		public static TrainingData TrainingDataFor(CityInfo city, UnitType unitType)
 		{
-			return Train(Position.Of(city), unitType);
+			return TrainingDataFor(Position.Of(city), unitType);
 		}
 
-
-		public static TrainingData Train(Position pos, UnitType unitType)
+		public static TrainingData TrainingDataFor(Position pos, UnitType unitType)
 		{
 			return new TrainingData
 			{
@@ -185,7 +55,7 @@ namespace CivPlayer
 			};
 		}
 
-		public static ResearchData Research(ResearchType res)
+		public static ResearchData ResearchDataFor(ResearchType res)
 		{
 			return new ResearchData
 			{
@@ -193,12 +63,12 @@ namespace CivPlayer
 			};
 		}
 
-		public static BuildingData Build(UnitInfo unit)
+		public static BuildingData BuildingDataFor(UnitInfo unit)
 		{
-			return Build(Position.Of(unit));
+			return BuildingDataFor(Position.Of(unit));
 		}
 
-		public static BuildingData Build(Position pos)
+		public static BuildingData BuildingDataFor(Position pos)
 		{
 			return new BuildingData
 			{
@@ -238,12 +108,12 @@ namespace CivPlayer
 		public bool CanTrain(UnitType type)
 		{
 			return player.MyUnits.Count() < Math.Min(20, player.MyCities.Count() * 5) &&
-				HasResearch(UnitRequirement(type)) && HasMoney(Constant.UnitCost(type));
+				HasResearch(Unit.Requirement(type)) && HasMoney(Unit.Cost(type));
 		}
 
 		public bool CanResearch(ResearchType type)
 		{
-			return !HasResearch(type) && HasResearch(ResearchRequirement(type)) && HasMoney(Constant.ResearchCost(type));
+			return !HasResearch(type) && HasResearch(Research.Requirement(type)) && HasMoney(Research.Cost(type));
 		}
 
 		public bool IsMyUnitAt(Position pos)
@@ -265,9 +135,9 @@ namespace CivPlayer
 		public bool DefendCity(CityInfo city, UnitType type)
 		{
 			var pos = Position.Of(city);
-			var res = UnitRequirement(type);
-			var rcost = Constant.ResearchCost(res);
-			var ucost = Constant.UnitCost(type);
+			var res = Unit.Requirement(type);
+			var rcost = Research.Cost(res);
+			var ucost = Unit.Cost(type);
 
 			if (!HasResearch(res) && !IsPlanned(res) && HasBudget(rcost + ucost))
 			{
@@ -296,7 +166,7 @@ namespace CivPlayer
 		public int TravelRounds(UnitInfo unit, Position pos)
 		{
 			var dist = Position.Of(unit).Distance(pos);
-			var div = Constant.UnitStats(unit.GetUnitType()).Movement;
+			var div = Unit.Stats(unit.GetUnitType()).Movement;
 			return (dist + div - 1) / div;
 		}
 
@@ -346,7 +216,7 @@ namespace CivPlayer
 
 		public bool BeforeCanColonize()
 		{
-			return HasBudget(Constant.ColonyCost + (player.MyUnits.Any() ? 0 : Constant.UnitCost(UnitType.Felderito)) - Income);
+			return HasBudget(Constant.ColonyCost + (player.MyUnits.Any() ? 0 : Unit.Cost(UnitType.Felderito)) - Income);
 		}
 
 		public bool CanBuild(UnitInfo unit)
@@ -363,10 +233,10 @@ namespace CivPlayer
 		{
 			var plannedUnits = plan.TrainingList.Where(t => t.Item2.Equals(pos)).Select(t => t.Item1).ToArray();
 			var threat = player.EnemyUnits.Where(u => TravelRounds(u, pos) <= 1).ToArray();
-			if (threat.Count() == 1 && threat.Any(u => u.GetUnitType() == UnitType.Felderito))
-			{
-				return 0.6; 
-			}
+			//if (threat.Count() == 1 && threat.Any(u => u.GetUnitType() == UnitType.Felderito))
+			//{
+			//	return 0.6; 
+			//}
 			var survive = Battle.WillDefendersSurvive(player.world, threat, pos, plannedUnits);
 
 			return survive ? 0 : 1;
@@ -419,21 +289,21 @@ namespace CivPlayer
 			bool NextRound = false)
 		{
 			var budget = player.Money + (NextRound ? Income : 0) - plan.PlanCost;
-			var cost = Felderito*Constant.UnitCost(UnitType.Felderito) +
-			           Lovag*Constant.UnitCost(UnitType.Lovag) +
-			           Orzo*Constant.UnitCost(UnitType.Orzo) +
-			           Tanonc*Constant.UnitCost(UnitType.Tanonc) +
-			           Mester*Constant.UnitCost(UnitType.Mester) +
-			           Falu*Constant.ResearchCost(ResearchType.Falu) +
-			           Varos*Constant.ResearchCost(ResearchType.Varos) +
-			           OrzokTornya*Constant.ResearchCost(ResearchType.OrzokTornya) +
-			           Kovacsmuhely*Constant.ResearchCost(ResearchType.Kovacsmuhely) +
-			           Barakk*Constant.ResearchCost(ResearchType.Barakk) +
-			           HarciAkademia*Constant.ResearchCost(ResearchType.HarciAkademia) +
-			           Varoshaza*Constant.ResearchCost(ResearchType.Varoshaza) +
-			           Bank*Constant.ResearchCost(ResearchType.Bank) +
-			           Barikad*Constant.ResearchCost(ResearchType.Barikad) +
-			           Fal*Constant.ResearchCost(ResearchType.Fal) +
+			var cost = Felderito * Unit.Cost(UnitType.Felderito) +
+					   Lovag * Unit.Cost(UnitType.Lovag) +
+					   Orzo * Unit.Cost(UnitType.Orzo) +
+					   Tanonc * Unit.Cost(UnitType.Tanonc) +
+					   Mester * Unit.Cost(UnitType.Mester) +
+			           Falu*Research.Cost(ResearchType.Falu) +
+			           Varos*Research.Cost(ResearchType.Varos) +
+			           OrzokTornya*Research.Cost(ResearchType.OrzokTornya) +
+			           Kovacsmuhely*Research.Cost(ResearchType.Kovacsmuhely) +
+			           Barakk*Research.Cost(ResearchType.Barakk) +
+			           HarciAkademia*Research.Cost(ResearchType.HarciAkademia) +
+			           Varoshaza*Research.Cost(ResearchType.Varoshaza) +
+			           Bank*Research.Cost(ResearchType.Bank) +
+			           Barikad*Research.Cost(ResearchType.Barikad) +
+			           Fal*Research.Cost(ResearchType.Fal) +
 			           Colony*Constant.ColonyCost +
 			           Deposit;
 
@@ -482,10 +352,10 @@ namespace CivPlayer
 		/// <returns>damage, chance of riposte, expected damage</returns>
 		public Tuple<int, double, double> Riposte(UnitType type, Position pos)
 		{
-			var att = Constant.UnitStats(type).Attack;
+			var att = Unit.Stats(type).Attack;
 			var riposte = EnemyUnitsAt(pos)
-				.Select(p => Constant.UnitStats(p.GetUnitType()))
-				.Select(p => Tuple.Create(p.Defense, p.Damage, 1 - Constant.ChanceToHit(att, p.Defense)))
+				.Select(p => Unit.Stats(p.GetUnitType()))
+				.Select(p => Tuple.Create(p.Defense, p.Damage, 1 - Unit.ChanceToHit(att, p.Defense)))
 				.OrderBy(t => -t.Item1)
 				.FirstOrDefault();
 
@@ -502,7 +372,7 @@ namespace CivPlayer
 				var next = plan.ResearchList.First();
 				plan.ResearchList.RemoveAt(0);
 				if (CanResearch(next))
-					return Research(next);
+					return ResearchDataFor(next);
 			}
 			return null;
 		}
@@ -514,7 +384,7 @@ namespace CivPlayer
 				var next = plan.TrainingList.First();
 				plan.TrainingList.RemoveAt(0);
 				if (CanTrain(next.Item1) && IsMyCity(next.Item2))
-					return Train(next.Item2, next.Item1);
+					return TrainingDataFor(next.Item2, next.Item1);
 			}
 			return null;
 		}
@@ -526,7 +396,7 @@ namespace CivPlayer
 				var next = plan.BuildList.First();
 				plan.BuildList.RemoveAt(0);
 				if (CanBuild(next))
-					return Build(next);
+					return BuildingDataFor(next);
 			}
 			return null;
 		}

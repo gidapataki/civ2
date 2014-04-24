@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Battallion.cs" />
+    <Compile Include="Battle.cs" />
     <Compile Include="ColonizeStrategy.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="EnumHelper.cs" />

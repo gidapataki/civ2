@@ -25,7 +25,7 @@ namespace CivPlayer
 			// train.scout if no units
 			if (!player.MyUnits.Any() && CanTrain(UnitType.Felderito))
 			{
-				return Train(player.MyCities[0], UnitType.Felderito);
+				return TrainingDataFor(player.MyCities[0], UnitType.Felderito);
 			}
 			return null;
 		}
@@ -62,7 +62,7 @@ namespace CivPlayer
 		{
 			if (builder && CanBuild(builder))
 			{
-				return Build(builder);
+				return BuildingDataFor(builder);
 			}
 			return null;
 		}
@@ -70,14 +70,14 @@ namespace CivPlayer
 		public override ResearchData OnResearch()
 		{
 			if (CanResearch(ResearchType.Falu))
-				return Research(ResearchType.Falu);
+				return ResearchDataFor(ResearchType.Falu);
 			if (CanResearch(ResearchType.Varoshaza))
-				return Research(ResearchType.Varoshaza);
+				return ResearchDataFor(ResearchType.Varoshaza);
 			
 			if (CanResearch(ResearchType.Varos))
-				return Research(ResearchType.Varos);
+				return ResearchDataFor(ResearchType.Varos);
 			if (CanResearch(ResearchType.Bank))
-				return Research(ResearchType.Bank);
+				return ResearchDataFor(ResearchType.Bank);
 			
 			return null;
 		}

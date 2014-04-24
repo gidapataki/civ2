@@ -75,6 +75,18 @@ namespace CivPlayer
 			}
 		}
 
+		public void WantDependencyFor(UnitType type)
+		{
+
+		}
+
+		public void WantDependencyFor(ResearchType type)
+		{
+			//if (HasResearch(type))
+			var req = Research.Requirement(type);
+
+		}
+
 		public void Attack(Position pos)
 		{
 			if (!AttackList.Any(p => p.Equals(pos)))
@@ -106,8 +118,8 @@ namespace CivPlayer
 		{
 			get
 			{
-				return TrainingList.Sum(p => Constant.UnitCost(p.Item1)) +
-				       ResearchList.Sum(p => Constant.ResearchCost(p)) +
+				return TrainingList.Sum(p => Unit.Cost(p.Item1)) +
+				       ResearchList.Sum(p => Research.Cost(p)) +
 				       BuildList.Count()*Constant.ColonyCost;
 			}
 		}
