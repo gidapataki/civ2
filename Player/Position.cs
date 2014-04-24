@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CivSharp.Common;
 
@@ -71,6 +72,24 @@ namespace CivPlayer
 		{
 			return new Position(x + Math.Sign(p.x - x), y + Math.Sign(p.y - y));
 		}
+
+		public Position[] CloserSet(Position p)
+		{
+			var dst = Distance(p);
+			var res = new List<Position>();
+			for (var dx = -1; dx <= 1; ++dx) {
+				for (var dy = -1; dy <= 1; ++dy)
+				{
+					var q = new Position(x + dx, y + dy);
+					if (q.Distance(p) < dst && q.IsValid())
+					{
+						res.Add(q);
+					}
+				}
+			}
+			return res.ToArray();
+		}
+
 
 		public int EdgeDistance()
 		{

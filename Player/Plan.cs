@@ -20,9 +20,11 @@ namespace CivPlayer
 
 		private List<Tuple<UnitType, Position>> TrainingList2;
 		private List<Position> BuildList2;
+		private Strategy strategy;
 
-		public Plan()
+		public Plan(Strategy strategy)
 		{
+			this.strategy = strategy;
 			ResearchList = new List<ResearchType>();
 			BuildList = new List<Position>();
 			TrainingList = new List<Tuple<UnitType, Position>>();
@@ -62,7 +64,12 @@ namespace CivPlayer
 			var p = Position.Of(unit);
 			while (!p.Equals(pos))
 			{
-				var step = p.Closer(pos);
+				var steps = p.CloserSet(pos);
+				var step = steps.FirstOrDefault(q => !strategy.IsEnemyUnitAt(q));
+				if (step == null)
+				{
+					step = steps.First();
+				}
 				MovementList.Add(Tuple.Create(unit.UnitID, step));
 				p = step;
 			}

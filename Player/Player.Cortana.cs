@@ -15,7 +15,7 @@ namespace CivPlayer
 
 		public override string PlayerName // API
 		{
-			get { return "Cortana"; }
+			get { return "omelette du fromage"; }
 		}
 	}
 }

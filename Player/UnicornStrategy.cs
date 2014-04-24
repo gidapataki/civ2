@@ -46,7 +46,7 @@ namespace CivPlayer
 							{
 								var success = DefendCity(city, UnitType.Lovag);
 								if (success) { grow = true; }
-								if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1) && threat > 0.75)
+								if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1))
 								{
 									plan.Want(UnitType.Felderito, cpos);
 								}

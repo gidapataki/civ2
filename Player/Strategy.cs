@@ -114,7 +114,7 @@ namespace CivPlayer
 		public Strategy(Player player)
 		{
 			this.player = player;
-			plan = new Plan();
+			plan = new Plan(this);
 			random = new Random();
 			trackedUnits = new List<TrackedUnit>();
 		}
@@ -559,8 +559,6 @@ namespace CivPlayer
 				}
 			}
 
-
-
 			while (plan.MovementList.Any())
 			{
 				var next = plan.MovementList.First();
@@ -612,7 +610,11 @@ namespace CivPlayer
 						);
 
 					target = pos.Closer(target);
-					if (CanMove(u, target))
+
+					var there = MyUnitsAt(target).Count();
+					var here = MyUnitsAt(pos).Count();
+
+					if (here - 1 >= there + 1  && CanMove(u, target))
 					{
 						return Move(u, target);
 					}
