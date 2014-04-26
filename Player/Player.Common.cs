@@ -100,7 +100,9 @@ namespace CivPlayer
 		{}
 
 		public void UnitLost(string unitID) // API
-		{}
+		{
+			strategy.UnitLost(unitID);
+		}
 
 		private void UpdateStats()
 		{

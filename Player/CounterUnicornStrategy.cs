@@ -15,12 +15,23 @@ namespace CivPlayer
 		private bool needWall = false;
 		private bool sentInel = false;
 		private bool attack = false;
+		private bool incoming = false;
 
 		public CounterUnicornStrategy(Player player)
 			: base(player)
 		{
 			useFallback = true;
 		}
+
+
+		public override void UnitLost(string unitID)
+		{
+			if (player.world.Units.Where(u => u.Owner == player.PlayerName && u.UnitID == unitID).Any())
+			{
+				incoming = true;
+			}
+		}
+		
 
 		public override void PlotMasterPlan()
 		{
@@ -110,25 +121,25 @@ namespace CivPlayer
 					plan.Want(ResearchType.Varos);
 					plan.Want(ResearchType.Bank);
 				}
+				
+				
 				if (HasBudgetFor(Barakk: 1, HarciAkademia: 1) && !HasResearch(ResearchType.Barakk)
-					&& HasResearch(ResearchType.Bank))
+					&& HasResearch(ResearchType.Bank) && HasResearch(ResearchType.Kovacsmuhely))
 				{
 					plan.Want(ResearchType.Barakk);
 					plan.Want(ResearchType.HarciAkademia);
 				}
-				//if (HasBudgetFor(OrzokTornya: 1) && (HasResearch(ResearchType.Bank)))
-				//{
-				//	plan.Want(ResearchType.OrzokTornya);
-				//}
 
-				//if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && HasBudget(player.EnemyMoney + 800)) { plan.Want(ResearchType.Barikad); }
-				//if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
+				
+				if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && incoming
+					) { plan.Want(ResearchType.Barikad); }
+				if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
 			}
 
 
 			if (player.Turn > 75 && player.EnemyMoney >= player.Money - Income)
 			{
-				//attack = true;
+				attack = true;
 			}
 
 			if (attack)

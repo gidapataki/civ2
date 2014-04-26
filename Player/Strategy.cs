@@ -415,6 +415,11 @@ namespace CivPlayer
 				}
 				else
 				{
+					UnitInfo mester = player.MyUnits.Where(unit =>
+						Position.Of(unit).Distance(pos) <= unit.MovementPoints-1  &&
+						MyClosestCity(pos) <= 2 && unit.GetUnitType() == UnitType.Mester)
+						.FirstOrDefault();
+
 					UnitInfo defender = player.MyUnits.Where(unit => 
 						Position.Of(unit).Distance(pos) <= unit.MovementPoints && 
 						unit.GetUnitType() != UnitType.Felderito &&
@@ -424,6 +429,11 @@ namespace CivPlayer
 							.OrderBy(n => -n.Item1)
 							.Select(n => n.Item2)
 							.FirstOrDefault();
+
+					//if (mester != null)
+					//{
+					//	defender = mester; 
+					//}
 
 					if (defender != null)
 					{
@@ -519,6 +529,8 @@ namespace CivPlayer
 			plan.Bump();
 			PlotMasterPlan();
 		}
+
+		public virtual void UnitLost(string unitID) {}
 
 		public virtual void PlotMasterPlan() { }
 		public virtual void BeforeMovement() { }
