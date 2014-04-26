@@ -23,7 +23,7 @@ namespace Runner
 		static void Main(string[] args)
 		{
 			var baseDir = Path.GetFullPath(@"..\..\..");
-			var civDir = Path.Combine(baseDir, "CivSharp 2");
+			var civDir = Path.Combine(baseDir, "CivSharp 2.1");
 
 			Func<string, string> playerDll = (string s) => Path.Combine(baseDir, @"Player\bin\debug", s + ".dll");
 			Func<string, string> targetDll = (string s) => Path.Combine(civDir, "Players", s + ".dll");

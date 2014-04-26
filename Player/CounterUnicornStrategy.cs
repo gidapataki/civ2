@@ -44,9 +44,18 @@ namespace CivPlayer
 							var threat = ChanceToLose(cpos);
 							if (threat > 0.5)
 							{
-								var success = DefendCity(city, UnitType.Lovag);
+								var success = false;
+								if (!IsDefendedBy(city, UnitType.Orzo))
+								{
+									success = DefendCity(city, UnitType.Orzo); 
+								}
+								if (!success)
+								{
+									success =  DefendCity(city, UnitType.Lovag);
+								}
 								if (success) { grow = true; }
-								if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1))
+								if (!success && !IsMyUnitAt(Position.Of(city)) && HasBudgetFor(Felderito: 1))
+								//if (!success && !IsDefendedBy(city, UnitType.Felderito) && HasBudgetFor(Felderito: 1))
 								{
 									plan.Want(UnitType.Felderito, cpos);
 								}
@@ -61,7 +70,7 @@ namespace CivPlayer
 				}
 			}
 
-			if (BeforeCanColonize() && NumberOfUnits == 0 && !sentInel)
+			if (BeforeCanColonize() && NumberOfUnits == 0)
 			{
 				plan.Want(UnitType.Felderito, Position.Of(player.MyCities.First()));
 			}
@@ -87,7 +96,7 @@ namespace CivPlayer
 				}
 			}
 
-			if (NumberOfCities == 4)
+			if (NumberOfCities >= 4)
 			{
 				if (HasBudgetFor(Falu: 1, Varoshaza: 1) && !HasResearch(ResearchType.Varoshaza))
 				{
@@ -99,14 +108,19 @@ namespace CivPlayer
 					plan.Want(ResearchType.Varos);
 					plan.Want(ResearchType.Bank);
 				}
-				if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && HasBudget(player.EnemyMoney + 800)) { plan.Want(ResearchType.Barikad); }
-				if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
+				if (HasBudgetFor(OrzokTornya: 1) && (HasResearch(ResearchType.Bank)))
+				{
+					plan.Want(ResearchType.OrzokTornya);
+				}
+
+				//if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && HasBudget(player.EnemyMoney + 800)) { plan.Want(ResearchType.Barikad); }
+				//if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
 			}
 
 
 			if (player.Turn > 75 && player.EnemyMoney >= player.Money - Income)
 			{
-				attack = true;
+				//attack = true;
 			}
 
 			if (attack)

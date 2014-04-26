@@ -220,6 +220,11 @@ namespace CivPlayer
 			return HasBudget(Constant.ColonyCost + (player.MyUnits.Any() ? 0 : Unit.Cost(UnitType.Felderito)) - Income);
 		}
 
+		public bool BeforeCanColonizeLovag()
+		{
+			return HasBudget(Constant.ColonyCost + (player.MyUnits.Any() ? 0 : Unit.Cost(UnitType.Lovag)) - Income);
+		}
+
 		public bool CanBuild(UnitInfo unit)
 		{
 			return !IsMyCity(Position.Of(unit)) && CanColonize();
@@ -315,7 +320,7 @@ namespace CivPlayer
 
 		public int Income
 		{
-			get { return (25 + (HasResearch(ResearchType.Varoshaza) ? 10 : 0) + (HasResearch(ResearchType.Bank) ? 20 : 0)) * Math.Min(4, player.MyCities.Count()); }
+			get { return (25 + (HasResearch(ResearchType.Varoshaza) ? 10 : 0) + (HasResearch(ResearchType.Bank) ? 40 : 0)) * Math.Min(4, player.MyCities.Count()); }
 		}
 
 		public int NumberOfUnits
@@ -410,7 +415,10 @@ namespace CivPlayer
 				}
 				else
 				{
-					UnitInfo defender = player.MyUnits.Where(unit => Position.Of(unit).Distance(pos) <= unit.MovementPoints && unit.GetUnitType() != UnitType.Felderito)
+					UnitInfo defender = player.MyUnits.Where(unit => 
+						Position.Of(unit).Distance(pos) <= unit.MovementPoints && 
+						unit.GetUnitType() != UnitType.Felderito &&
+						unit.GetUnitType() != UnitType.Orzo)
 							.Select(unit => Tuple.Create(unit.HitPoints, Riposte(unit.GetUnitType(), pos), unit))
 							.Select(t => Tuple.Create(t.Item1 - t.Item2.Item3, t.Item3))
 							.OrderBy(n => -n.Item1)
@@ -468,7 +476,7 @@ namespace CivPlayer
 			}
 			else if (cityUnits.Any())
 			{
-				foreach (var u in cityUnits)
+				foreach (var u in cityUnits.Where(u => u.GetUnitType() != UnitType.Orzo))
 				{
 					var pos = Position.Of(u);
 					var target = FindUnitTarget(u, p =>

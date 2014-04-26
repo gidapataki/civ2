@@ -30,11 +30,14 @@ namespace CivPlayer
 		{
 			if (NumberOfUnits == 0)
 			{
-				plan.Want(UnitType.Felderito, BasePosition);
+				plan.Want(UnitType.Felderito, BasePosition, 1);
 			}
 			else if (CanColonize())
 			{
-				var builder = FindUnit(unit => UnitWeight.Set(Felderito: 5).Get(unit));
+				var builder = FindUnit(unit => 
+						+ UnitWeight.Set(Felderito: 5).Get(unit)
+						//+ Position.Of(unit).CornerDistance() * 10
+					);
 
 				if (builder != null)
 				{
@@ -99,19 +102,16 @@ namespace CivPlayer
 			return false;
 		}
 
+
 		public override void PlotMasterPlan()
 		{
 			DoFarming();
-			NeedUnit(UnitType.Tanonc, BattleCity, 1, true);
-			//if (!rush)
-			//{
-			//}
-			//else
-			//{
-			//	NeedUnit(UnitType.Mester, BattleCity, 1);
-			//}
-		
+			//NeedUnit(UnitType.Felderito, BattleCity, 1, true);
 
+			if(NumberOfCities == 4 && HasResearch(ResearchType.Bank))
+				NeedUnit(UnitType.Mester, BattleCity, 1, true);
+			if (rush)
+				NeedUnit(UnitType.Mester, BattleCity, 1, true);
 
 			// attack:
 			foreach (var unit in player.MyUnits)

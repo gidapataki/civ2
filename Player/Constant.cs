@@ -64,10 +64,10 @@ namespace CivPlayer
 			switch (type)
 			{
 				case UnitType.Felderito: return new Stats(2, 10, 2, 3, 4, 1);
-				case UnitType.Orzo: return new Stats(5, 30, 6, 10, 1, 3);
-				case UnitType.Lovag: return new Stats(15, 20, 12, 8, 1, 2);
-				case UnitType.Tanonc: return new Stats(10, 10, 6, 6, 2, 1);
-				case UnitType.Mester: return new Stats(10, 10, 100, 6, 2, 1);
+				case UnitType.Orzo: return new Stats(5, 40, 6, 10, 1, 4);
+				case UnitType.Lovag: return new Stats(15, 20, 12, 8, 2, 2);
+				case UnitType.Tanonc: return new Stats(10, 10, 6, 6, 3, 1);
+				case UnitType.Mester: return new Stats(10, 10, 100, 6, 4, 1);
 				default: return new Stats(0, 0, 0, 0, 0, 0);
 			}
 		}
@@ -87,7 +87,7 @@ namespace CivPlayer
 				case ResearchType.Barakk: return 200;
 				case ResearchType.HarciAkademia: return 500;
 				case ResearchType.Varoshaza: return 150;
-				case ResearchType.Bank: return 300;
+				case ResearchType.Bank: return 400;
 				case ResearchType.Barikad: return 100;
 				case ResearchType.Fal: return 200;
 				default: return 0;
