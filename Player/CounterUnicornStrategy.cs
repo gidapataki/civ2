@@ -45,9 +45,11 @@ namespace CivPlayer
 							if (threat > 0.5)
 							{
 								var success = false;
-								if (!IsDefendedBy(city, UnitType.Orzo))
+								if (!IsDefendedBy(city, UnitType.Mester) && 
+									IsDefendedBy(city, UnitType.Lovag) &&
+									HasResearch(ResearchType.HarciAkademia))
 								{
-									success = DefendCity(city, UnitType.Orzo); 
+									success = DefendCity(city, UnitType.Mester);
 								}
 								if (!success)
 								{
@@ -108,10 +110,16 @@ namespace CivPlayer
 					plan.Want(ResearchType.Varos);
 					plan.Want(ResearchType.Bank);
 				}
-				if (HasBudgetFor(OrzokTornya: 1) && (HasResearch(ResearchType.Bank)))
+				if (HasBudgetFor(Barakk: 1, HarciAkademia: 1) && !HasResearch(ResearchType.Barakk)
+					&& HasResearch(ResearchType.Bank))
 				{
-					plan.Want(ResearchType.OrzokTornya);
+					plan.Want(ResearchType.Barakk);
+					plan.Want(ResearchType.HarciAkademia);
 				}
+				//if (HasBudgetFor(OrzokTornya: 1) && (HasResearch(ResearchType.Bank)))
+				//{
+				//	plan.Want(ResearchType.OrzokTornya);
+				//}
 
 				//if (HasBudgetFor(Barikad: 1) && !HasResearch(ResearchType.Barikad) && HasBudget(player.EnemyMoney + 800)) { plan.Want(ResearchType.Barikad); }
 				//if (HasBudgetFor(Fal: 1) && !HasResearch(ResearchType.Fal) && HasResearch(ResearchType.Barikad)) { plan.Want(ResearchType.Fal); }
